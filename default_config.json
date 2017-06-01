@@ -1,0 +1,76 @@
+{
+    // General > Edit values BUT do not delete.
+    "scene_width": 2000,
+    "scene_height": 2000,
+    "grid_size": 36,
+    "antialiasing": true,
+    "antialiasing_boost": true,
+    "smooth_pixmap": true,
+
+    "node_font": "Arial",
+    "node_font_size": 12,
+    "attr_font": "Arial",
+    "attr_font_size": 10,
+    "mouse_bounding_box": 80,
+
+    // Shapes > Edit values BUT do not delete.
+    "node_width": 200,
+    "node_height": 25,
+    "node_radius": 10,
+    "node_border": 2,
+    "node_attr_height": 30,
+    "connection_width": 2,
+
+    // Default colors > Edit values BUT do not delete.
+    "alternate_value": 20,
+    "grid_color": [50, 50, 50, 255],
+    "slot_border": [50, 50, 50, 255],
+    "non_connectable_color": [100, 100, 100, 255],
+    "connection_color": [255, 155, 0, 255],
+
+    "node_default": {
+        "bg": [130, 130, 130, 255],
+        "border": [50, 50, 50, 255],
+        "border_sel": [250, 250, 250, 255],
+        "text": [255, 255, 255, 255]
+    },
+
+    "attr_default": {
+        "bg": [160, 160, 160, 255],
+        "text": [220, 220, 220, 255],
+        "plug": [255, 155, 0, 255],
+        "socket": [255, 155, 0, 255]
+    },
+
+    // Custom colors > Add and remove as you want.
+    // Don't forget to edit the end of the dictionary if editing the
+    // following part.
+
+    "node_preset_1": {
+        "bg": [80, 80, 80, 255],
+        "border": [50, 50, 50, 255],
+        "border_sel": [170, 80, 80, 255],
+        "text": [230, 230, 230, 255]
+    },
+
+    "attr_preset_1": {
+        "bg": [60, 60, 60, 255],
+        "text": [220, 220, 220, 255],
+        "plug": [255, 155, 0, 255],
+        "socket": [255, 155, 0, 255]
+    },
+
+    "attr_preset_2":{
+        "bg": [250, 120, 120, 255],
+        "text": [220, 220, 220, 255],
+        "plug": [255, 155, 0, 255],
+        "socket": [255, 155, 0, 255]
+    },
+
+    "attr_preset_3":{
+        "bg": [160, 160, 160, 255],
+        "text": [220, 220, 220, 255],
+        "plug": [255, 155, 0, 255],
+        "socket": [255, 155, 0, 255]
+    }
+}
