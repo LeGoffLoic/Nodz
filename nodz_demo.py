@@ -170,8 +170,6 @@ nodz.clearGraph()
 
 nodz.loadGraph(filePath='Enter your path')
 
-nodz.debug()
-
 
 
 
