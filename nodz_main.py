@@ -795,9 +795,9 @@ class Nodz(QtWidgets.QGraphicsView):
 
 
         # Save data.
-        if os.path.exists(filePath):
+        try:
             utils._saveData(filePath=filePath, data=data)
-        else:
+        except:
             print 'Invalid path : {0}'.format(filePath)
             print 'Save aborted !'
             return False
