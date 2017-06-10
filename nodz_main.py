@@ -873,27 +873,31 @@ class Nodz(QtWidgets.QGraphicsView):
             targetNode = target.split('.')[0]
             targetAttr = target.split('.')[1]
 
-            plug = self.scene().nodes[sourceNode].plugs[sourceAttr]
-            socket = self.scene().nodes[targetNode].sockets[targetAttr]
-
-            connection = ConnectionItem(plug.center(), socket.center(), plug, socket)
-
-            connection.plugNode = plug.parentItem().name
-            connection.plugAttr = plug.attribute
-            connection.socketNode = socket.parentItem().name
-            connection.socketAttr = socket.attribute
-
-            plug.connect(socket, connection)
-            socket.connect(plug, connection)
-
-            connection.updatePath()
-
-            self.scene().addItem(connection)
+            self.createConnection(sourceNode, sourceAttr,
+                                  targetNode, targetAttr)
 
         self.scene().update()
 
         # Emit signal.
         self.signal_GraphLoaded.emit()
+
+    def createConnection(self, sourceNode, sourceAttr, targetNode, targetAttr):
+        plug = self.scene().nodes[sourceNode].plugs[sourceAttr]
+        socket = self.scene().nodes[targetNode].sockets[targetAttr]
+
+        connection = ConnectionItem(plug.center(), socket.center(), plug, socket)
+
+        connection.plugNode = plug.parentItem().name
+        connection.plugAttr = plug.attribute
+        connection.socketNode = socket.parentItem().name
+        connection.socketAttr = socket.attribute
+
+        plug.connect(socket, connection)
+        socket.connect(plug, connection)
+
+        connection.updatePath()
+
+        self.scene().addItem(connection)
 
     def evaluateGraph(self):
         """
