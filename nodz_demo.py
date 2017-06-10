@@ -1,5 +1,7 @@
-from Qt import QtCore
+from Qt import QtCore, QtWidgets
 import nodz_main
+
+app = QtWidgets.QApplication([])
 
 nodz = nodz_main.Nodz(None)
 # nodz.loadConfig(filePath='')
@@ -173,3 +175,4 @@ nodz.loadGraph(filePath='Enter your path')
 
 
 
+app.exec_()
