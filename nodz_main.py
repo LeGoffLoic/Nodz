@@ -8,7 +8,6 @@ import nodz_utils as utils
 
 
 defaultConfigPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'default_config.json')
-config = None
 
 
 class Nodz(QtWidgets.QGraphicsView):
@@ -38,18 +37,15 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_KeyPressed = QtCore.Signal(object)
     signal_Dropped = QtCore.Signal()
 
-    def __init__(self, parent):
+    def __init__(self, parent, configPath=defaultConfigPath):
         """
         Initialize the graphics view.
 
         """
         super(Nodz, self).__init__(parent)
 
-        global nodzInst
-        nodzInst = self
-
-        # Load default nodz configuration.
-        self.loadConfig()
+        # Load nodz configuration.
+        self.loadConfig(configPath)
 
         # General data.
         self.gridVisToggle = True
@@ -426,7 +422,7 @@ class Nodz(QtWidgets.QGraphicsView):
     # API
     ##################################################################
 
-    def loadConfig(self, filePath=defaultConfigPath):
+    def loadConfig(self, filePath):
         """
         Set a specific configuration for this instance of Nodz.
 
@@ -435,10 +431,7 @@ class Nodz(QtWidgets.QGraphicsView):
                          use.
 
         """
-        data = utils._loadConfig(filePath)
-
-        global config
-        config = data
+        self.config = utils._loadConfig(filePath)
 
     def initialize(self):
         """
@@ -446,6 +439,7 @@ class Nodz(QtWidgets.QGraphicsView):
 
         """
         # Setup view.
+        config = self.config
         self.setRenderHint(QtGui.QPainter.Antialiasing, config['antialiasing'])
         self.setRenderHint(QtGui.QPainter.TextAntialiasing, config['antialiasing'])
         self.setRenderHint(QtGui.QPainter.HighQualityAntialiasing, config['antialiasing_boost'])
@@ -503,7 +497,8 @@ class Nodz(QtWidgets.QGraphicsView):
             print 'Node creation aborted !'
             return
         else:
-            nodeItem = NodeItem(name=name, alternate=alternate, preset=preset)
+            nodeItem = NodeItem(name=name, alternate=alternate, preset=preset,
+                                config=self.config)
 
             # Store node in scene.
             self.scene().nodes[name] = nodeItem
@@ -947,7 +942,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
         super(NodeScene, self).__init__(parent)
 
         # General.
-        self.gridSize = config['grid_size']
+        self.gridSize = parent.config['grid_size']
 
         # Nodes storage.
         self.nodes = dict()
@@ -999,6 +994,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
                 u += self.gridSize
 
             self.pen = QtGui.QPen()
+            config = self.parent().config
             self.pen.setColor(utils._convertDataToColor(config['grid_color']))
             self.pen.setWidth(0)
             painter.setPen(self.pen)
@@ -1022,7 +1018,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
     """
 
-    def __init__(self, name, alternate, preset):
+    def __init__(self, name, alternate, preset, config):
         """
         Initialize the class.
 
@@ -1059,7 +1055,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
         self.sockets = dict()
 
         # Methods.
-        self._createStyle()
+        self._createStyle(config)
 
     @property
     def height(self):
@@ -1087,7 +1083,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
         else:
             return self._pen
 
-    def _createStyle(self):
+    def _createStyle(self, config):
         """
         Read the node style from the configuration file.
 
@@ -1328,6 +1324,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
         offset = 0
         for attr in self.attrs:
             nodzInst = self.scene().views()[0]
+            config = nodzInst.config
 
             # Attribute rect.
             rect = QtCore.QRect(self.border / 2,
@@ -1498,6 +1495,7 @@ class SlotItem(QtWidgets.QGraphicsItem):
             self.connections.append(self.newConnection)
             self.scene().addItem(self.newConnection)
 
+            nodzInst = self.scene().views()[0]
             nodzInst.drawingConnection = True
             nodzInst.sourceSlot = self
             nodzInst.currentDataType = self.dataType
@@ -1509,6 +1507,8 @@ class SlotItem(QtWidgets.QGraphicsItem):
         Update the new connection's end point position.
 
         """
+        nodzInst = self.scene().views()[0]
+        config = nodzInst.config
         if nodzInst.drawingConnection:
             mbb = utils._createPointerBoundingBox(pointerPos=event.scenePos().toPoint(),
                                                   bbSize=config['mouse_bounding_box'])
@@ -1535,6 +1535,7 @@ class SlotItem(QtWidgets.QGraphicsItem):
         Apply the connection if target_slot is valid.
 
         """
+        nodzInst = self.scene().views()[0]
         if event.button() == QtCore.Qt.LeftButton:
             nodzInst.drawingConnection = False
             nodzInst.currentDataType = None
@@ -1581,6 +1582,8 @@ class SlotItem(QtWidgets.QGraphicsItem):
         painter.setBrush(self.brush)
         painter.setPen(self.pen)
 
+        nodzInst = self.scene().views()[0]
+        config = nodzInst.config
         if nodzInst.drawingConnection:
             if self.parentItem() == nodzInst.currentHoveredNode:
                 painter.setBrush(utils._convertDataToColor(config['non_connectable_color']))
@@ -1643,13 +1646,14 @@ class PlugItem(SlotItem):
         self.slotType = 'plug'
 
         # Methods.
-        self._createStyle()
+        self._createStyle(parent)
 
-    def _createStyle(self):
+    def _createStyle(self, parent):
         """
         Read the attribute style from the configuration file.
 
         """
+        config = parent.scene().views()[0].config
         self.brush = QtGui.QBrush()
         self.brush.setStyle(QtCore.Qt.SolidPattern)
         self.brush.setColor(utils._convertDataToColor(config[self.preset]['plug']))
@@ -1660,6 +1664,9 @@ class PlugItem(SlotItem):
 
         """
         width = height = self.parentItem().attrHeight / 2.0
+
+        nodzInst = self.scene().views()[0]
+        config = nodzInst.config
 
         x = self.parentItem().baseWidth - (width / 2.0)
         y = (self.parentItem().baseHeight - config['node_radius'] +
@@ -1752,13 +1759,14 @@ class SocketItem(SlotItem):
         self.slotType = 'socket'
 
         # Methods.
-        self._createStyle()
+        self._createStyle(parent)
 
-    def _createStyle(self):
+    def _createStyle(self, parent):
         """
         Read the attribute style from the configuration file.
 
         """
+        config = parent.scene().views()[0].config
         self.brush = QtGui.QBrush()
         self.brush.setStyle(QtCore.Qt.SolidPattern)
         self.brush.setColor(utils._convertDataToColor(config[self.preset]['socket']))
@@ -1769,6 +1777,9 @@ class SocketItem(SlotItem):
 
         """
         width = height = self.parentItem().attrHeight / 2.0
+
+        nodzInst = self.scene().views()[0]
+        config = nodzInst.config
 
         x = - width / 2.0
         y = (self.parentItem().baseHeight - config['node_radius'] +
@@ -1884,6 +1895,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         Read the connection style from the configuration file.
 
         """
+        config = self.source.scene().views()[0].config
         self.setAcceptHoverEvents(True)
         self.setZValue(-1)
 
@@ -1933,6 +1945,9 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         Move the Connection with the mouse.
 
         """
+        nodzInst = self.scene().views()[0]
+        config = nodzInst.config
+
         mbb = utils._createPointerBoundingBox(pointerPos=event.scenePos().toPoint(),
                                               bbSize=config['mouse_bounding_box'])
 
@@ -1960,6 +1975,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         Create a Connection if possible, otherwise delete it.
 
         """
+        nodzInst = self.scene().views()[0]
         nodzInst.drawingConnection = False
 
         slot = self.scene().itemAt(event.scenePos().toPoint(), QtGui.QTransform())
@@ -2010,7 +2026,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         if self.target is not None:
             self.target.disconnect(self)
 
-        scene = nodzInst.scene()
+        scene = self.scene()
         scene.removeItem(self)
         scene.update()
 
