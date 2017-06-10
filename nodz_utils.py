@@ -84,6 +84,7 @@ def _createPointerBoundingBox(pointerPos, bbSize):
 
     size = QtCore.QSize(bbSize, bbSize)
     bb = QtCore.QRect(mbbPos, size)
+    bb = QtCore.QRectF(bb)
 
     return bb
 

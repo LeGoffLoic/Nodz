@@ -393,7 +393,7 @@ class Nodz(QtWidgets.QGraphicsView):
         # end if
         bbw = bbx_max - bbx_min
         bbh = bby_max - bby_min
-        return QtCore.QRect(bbx_min, bby_min, bbw, bbh)
+        return QtCore.QRectF(QtCore.QRect(bbx_min, bby_min, bbw, bbh))
 
     def _deleteSelectedNodes(self):
         """
