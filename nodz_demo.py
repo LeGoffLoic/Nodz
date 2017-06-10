@@ -93,13 +93,13 @@ nodz.createAttribute(node=nodeA, name='Aattr1', index=-1, preset='attr_preset_1'
                      plug=True, socket=False, dataType=str)
 
 nodz.createAttribute(node=nodeA, name='Aattr2', index=-1, preset='attr_preset_1',
-                     plug=True, socket=False, dataType=int)
+                     plug=False, socket=False, dataType=int)
 
 nodz.createAttribute(node=nodeA, name='Aattr3', index=-1, preset='attr_preset_2',
-                     plug=True, socket=False, dataType=int)
+                     plug=True, socket=True, dataType=int)
 
 nodz.createAttribute(node=nodeA, name='Aattr4', index=-1, preset='attr_preset_2',
-                     plug=True, socket=False, dataType=str)
+                     plug=True, socket=True, dataType=str)
 
 
 
