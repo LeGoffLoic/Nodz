@@ -130,6 +130,7 @@ nodz.clearGraph()
 #nodz.loadGraph(filePath='testChOpWorldDirToAngle')
 nodz.loadGraph(filePath='DEMO_chargingArmy')
 nodz.autoLayoutGraph()
+nodz._focus()
 
 
 
