@@ -749,6 +749,73 @@ class Nodz(QtWidgets.QGraphicsView):
 
 
     # GRAPH
+    def autoLayoutGraph(self, margin = 50):
+        """
+        Auto set nodes positions in the graph according to their connections.
+
+        """
+
+        nodeWidth = 300    #default value, will be replaced by node.baseWidth + margin when iterating on the first node
+
+        nodes = self.scene().nodes
+        rootNodes = []
+        alreadyPlacedNodes = []
+
+        # root nodes (without connection on the plug)
+        for nodeName, node in nodes.items():
+            nodeWidth = node.baseWidth + margin
+            connectionCount=0
+            for plug in node.plugs.values():
+                connectionCount += len(plug.connections)
+            if connectionCount==0:
+                rootNodes.append(node)
+        
+        maxGraphWidth = 0
+        rootGraphs = [[[0 for x in range(0)] for y in range(0)] for z in range(0)]
+        for rootNode in rootNodes:
+            rootGraph = [[0 for x in range(0)] for y in range(0)]
+            rootGraph.append([rootNode])
+            
+            currentGraphLevel = 0
+            doNextGraphLevel = True
+            while(doNextGraphLevel):
+                doNextGraphLevel = False
+                for nodeI in range(len(rootGraph[currentGraphLevel])):
+                    node = rootGraph[currentGraphLevel][nodeI]
+                    for attr in node.attrs:
+                        if attr in node.sockets:
+                            socket = node.sockets[attr]
+                            for connection in socket.connections:
+                                if len(rootGraph)<=(currentGraphLevel+1):
+                                    emptyArray = []
+                                    rootGraph.append(emptyArray)
+                                rootGraph[currentGraphLevel+1].append(connection.plugItem.parentItem())
+                                doNextGraphLevel = True
+                currentGraphLevel+=1
+
+            graphWidth = len(rootGraph) * nodeWidth
+            maxGraphWidth = max(graphWidth, maxGraphWidth)
+            rootGraphs.append(rootGraph)
+
+        baseYpos = margin
+        for rootGraph in rootGraphs:
+            #set positions...    
+            currentXpos = maxGraphWidth-nodeWidth
+            nextBaseYpos = baseYpos
+            for nodesAtLevel in rootGraph:
+                currentYpos = baseYpos
+                for node in nodesAtLevel:
+                    if node not in alreadyPlacedNodes:
+                        alreadyPlacedNodes.append(node)
+                        node_pos = QtCore.QPointF(currentXpos, currentYpos)
+                        node.setPos(node_pos)
+                        currentYpos += node.height + margin
+                        nextBaseYpos = max(nextBaseYpos, currentYpos)
+                currentXpos -= nodeWidth
+            baseYpos = nextBaseYpos
+
+        self.scene().updateScene()
+
     def saveGraph(self, filePath='path'):
         """
         Get all the current graph infos and store them in a .json file

@@ -84,6 +84,7 @@ def editAttribute( node, index, newName, newIndex)
 ```
 Graph
 ```python
+def autoLayoutGraph(margin)
 def saveGraph(filePath)
 def loadGraph(filePath)
 def evaluateGraph()
