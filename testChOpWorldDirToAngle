@@ -1,0 +1,198 @@
+{
+    "CONNECTIONS": [
+        [
+            "WorldDirToWorldAngle.Next ChOps", 
+            "EntityBodyOrientationOutput.Previous ChOps[0]"
+        ], 
+        [
+            "getAttrDirectionTranslateZ.Next ChOps", 
+            "XYZCOmponentsToVector.Previous ChOps[2]"
+        ], 
+        [
+            "getAttrDirectionTranslateY.Next ChOps", 
+            "XYZCOmponentsToVector.Previous ChOps[1]"
+        ], 
+        [
+            "getAttrDirectionTranslateX.Next ChOps", 
+            "XYZCOmponentsToVector.Previous ChOps[0]"
+        ], 
+        [
+            "XYZCOmponentsToVector.Next ChOps", 
+            "WorldDirToWorldAngle.Previous ChOps[0]"
+        ]
+    ], 
+    "NODES": {
+        "EntityBodyOrientationOutput": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Channel: Entity Body Orientation", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                2137.0, 
+                357.0
+            ], 
+            "preset": "node_preset_CrowdChOpOutput"
+        }, 
+        "WorldDirToWorldAngle": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: World Direction To World Angle", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1837.0, 
+                357.0
+            ], 
+            "preset": "node_preset_CrowdChOpConverter"
+        }, 
+        "XYZCOmponentsToVector": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[2]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: XYZ Components To Vector", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1537.0, 
+                357.0
+            ], 
+            "preset": "node_preset_CrowdChOpConverter"
+        }, 
+        "getAttrDirectionTranslateX": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: getAttr(\"direction.translateX\")", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                637.0, 
+                357.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "getAttrDirectionTranslateY": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: getAttr(\"direction.translateY\")", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                637.0, 
+                557.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "getAttrDirectionTranslateZ": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: getAttr(\"direction.translateZ\")", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                637.0, 
+                757.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }
+    }
+}

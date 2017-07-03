@@ -1,0 +1,1345 @@
+{
+    "CONNECTIONS": [
+        [
+            "chOpInterpolatorShape1.Next ChOps", 
+            "soldierSpeedOutputShape.Previous ChOps[0]"
+        ], 
+        [
+            "finalLinearSpeedShape.Next ChOps", 
+            "linearSpeedOutputShape.Previous ChOps[0]"
+        ], 
+        [
+            "chOpInputShape4.Next ChOps", 
+            "chOpOutputShape1.Previous ChOps[0]"
+        ], 
+        [
+            "finalAngularSpeedShape.Next ChOps", 
+            "angularSpeedOutputShape.Previous ChOps[0]"
+        ], 
+        [
+            "chOpOperationShape1.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[6]"
+        ], 
+        [
+            "nullLinearSpeedShape.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[5]"
+        ], 
+        [
+            "leftVisionAllEntitiesSensorShape.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[4]"
+        ], 
+        [
+            "nullLinearSpeedShape.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[3]"
+        ], 
+        [
+            "rightVisionAllEntitiesSensorShape.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[2]"
+        ], 
+        [
+            "nullLinearSpeedShape.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[1]"
+        ], 
+        [
+            "defaultLinearSpeedShape.Next ChOps", 
+            "finalLinearSpeedShape.Previous ChOps[0]"
+        ], 
+        [
+            "leftVisionAllEntitiesSensorShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[8]"
+        ], 
+        [
+            "turnRightAngleValueShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[7]"
+        ], 
+        [
+            "leftVisionSoldierSensorShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[6]"
+        ], 
+        [
+            "turnRightAngleValueShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[5]"
+        ], 
+        [
+            "rightVisionAllEntitiesSensorShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[4]"
+        ], 
+        [
+            "turnLeftAngleValueShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[3]"
+        ], 
+        [
+            "rightVisionSoldierSensorShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[2]"
+        ], 
+        [
+            "turnLeftAngleValueShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[1]"
+        ], 
+        [
+            "orientationCorrectionToDesiredShape.Next ChOps", 
+            "finalAngularSpeedShape.Previous ChOps[0]"
+        ], 
+        [
+            "positiveDistToChangeOfOriShape.Next ChOps", 
+            "currentlyDesiredOrientationShape.Previous ChOps[2]"
+        ], 
+        [
+            "desiredFirstMovingOrientationShape.Next ChOps", 
+            "currentlyDesiredOrientationShape.Previous ChOps[1]"
+        ], 
+        [
+            "desiredNextMovingOrientationShape.Next ChOps", 
+            "currentlyDesiredOrientationShape.Previous ChOps[0]"
+        ], 
+        [
+            "chOpOperationShape2.Next ChOps", 
+            "chOpInterpolatorShape1.Previous ChOps[4]"
+        ], 
+        [
+            "chOpInterpolatorShape1elseValue.Next ChOps", 
+            "chOpInterpolatorShape1.Previous ChOps[3]"
+        ], 
+        [
+            "positiveDistToChangeOfOriShape.Next ChOps", 
+            "chOpInterpolatorShape1.Previous ChOps[2]"
+        ], 
+        [
+            "chOpInputShape2.Next ChOps", 
+            "chOpInterpolatorShape1.Previous ChOps[1]"
+        ], 
+        [
+            "chOpInterpolatorShape1elseValue.Next ChOps", 
+            "chOpInterpolatorShape1.Previous ChOps[0]"
+        ], 
+        [
+            "fullOrientationInputShape.Next ChOps", 
+            "headingOrientationInputShape.Previous ChOps[0]"
+        ], 
+        [
+            "currentPositionInputShape.Next ChOps", 
+            "currentXPositionInputShape.Previous ChOps[0]"
+        ], 
+        [
+            "changeOfOriXCoordinateShape.Next ChOps", 
+            "chOpConverterShape1.Previous ChOps[0]"
+        ], 
+        [
+            "zeroInputShape.Next ChOps", 
+            "positiveDistToChangeOfOriShape.Previous ChOps[1]"
+        ], 
+        [
+            "distToChangeOfOriShape.Next ChOps", 
+            "positiveDistToChangeOfOriShape.Previous ChOps[0]"
+        ], 
+        [
+            "headingOrientationInputShape.Next ChOps", 
+            "orientationCorrectionToDesiredShape.Previous ChOps[1]"
+        ], 
+        [
+            "currentlyDesiredOrientationShape.Next ChOps", 
+            "orientationCorrectionToDesiredShape.Previous ChOps[0]"
+        ], 
+        [
+            "currentXPositionInputShape.Next ChOps", 
+            "distToChangeOfOriShape.Previous ChOps[1]"
+        ], 
+        [
+            "chOpConverterShape1.Next ChOps", 
+            "distToChangeOfOriShape.Previous ChOps[0]"
+        ], 
+        [
+            "chOpSensorInputShape1.Next ChOps", 
+            "chOpOperationShape2.Previous ChOps[1]"
+        ], 
+        [
+            "chOpInputShape3.Next ChOps", 
+            "chOpOperationShape2.Previous ChOps[0]"
+        ], 
+        [
+            "chOpInputShape1.Next ChOps", 
+            "chOpOperationShape1.Previous ChOps[1]"
+        ], 
+        [
+            "frontVisionShape.Next ChOps", 
+            "chOpOperationShape1.Previous ChOps[0]"
+        ], 
+        [
+            "finalAngularSpeedShape.Next ChOps", 
+            "angularSpeedToAngularDeltaShape.Previous ChOps[1]"
+        ], 
+        [
+            "dtInputShape.Next ChOps", 
+            "angularSpeedToAngularDeltaShape.Previous ChOps[0]"
+        ]
+    ], 
+    "NODES": {
+        "angularSpeedOutputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Channel: Entity Desired Move Orientation Delta", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1750.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpOutput"
+        }, 
+        "angularSpeedToAngularDeltaShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: x", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1750.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpOperation"
+        }, 
+        "chOpConverterShape1": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Vector X Component", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                250.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpConverter"
+        }, 
+        "chOpInputShape1": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 2", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1000.0, 
+                162.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "chOpInputShape2": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 5", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                1388.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "chOpInputShape3": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 1000", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1000.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "chOpInputShape4": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 0", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1500.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "chOpInterpolatorShape1": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[2]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[3]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[4]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Interpolate With Normalized Weights", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1500.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpMultiplexer"
+        }, 
+        "chOpInterpolatorShape1elseValue": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 0", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "chOpOperationShape1": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: x", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                50.0
+            ], 
+            "preset": "node_preset_CrowdChOpOperation"
+        }, 
+        "chOpOperationShape2": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: x", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                1530.0
+            ], 
+            "preset": "node_preset_CrowdChOpOperation"
+        }, 
+        "chOpOutputShape1": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Channel: Entity Desired Move Orientation", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1750.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpOutput"
+        }, 
+        "chOpSensorInputShape1": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1000.0, 
+                1388.0
+            ], 
+            "preset": "node_preset_CrowdChOpSensorInput"
+        }, 
+        "changeOfOriXCoordinateShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: getAttr (\"goRightLimit.translate\");", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                0.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "currentPositionInputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: this.position", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                0.0, 
+                790.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "currentXPositionInputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Vector X Component", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                250.0, 
+                820.0
+            ], 
+            "preset": "node_preset_CrowdChOpConverter"
+        }, 
+        "currentlyDesiredOrientationShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[2]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Interpolate", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1000.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpMultiplexer"
+        }, 
+        "defaultLinearSpeedShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 8", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                252.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "desiredFirstMovingOrientationShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 0", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                750.0, 
+                992.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "desiredNextMovingOrientationShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: -60", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                750.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "distToChangeOfOriShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: -", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                500.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpOperation"
+        }, 
+        "dtInputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 0.04", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1500.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "finalAngularSpeedShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[2]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[3]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[4]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[5]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[6]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[7]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[8]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Interpolate", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1500.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpMultiplexer"
+        }, 
+        "finalLinearSpeedShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[2]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[3]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[4]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[5]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[6]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Interpolate", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1500.0, 
+                50.0
+            ], 
+            "preset": "node_preset_CrowdChOpMultiplexer"
+        }, 
+        "frontVisionShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1000.0, 
+                50.0
+            ], 
+            "preset": "node_preset_CrowdChOpSensorInput"
+        }, 
+        "fullOrientationInputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: this.orientation", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                750.0, 
+                1134.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "headingOrientationInputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: Vector Y Component", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1000.0, 
+                880.0
+            ], 
+            "preset": "node_preset_CrowdChOpConverter"
+        }, 
+        "leftVisionAllEntitiesSensorShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpSensorInput"
+        }, 
+        "leftVisionSoldierSensorShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                790.0
+            ], 
+            "preset": "node_preset_CrowdChOpSensorInput"
+        }, 
+        "linearSpeedOutputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Channel: Entity Desired Speed", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1750.0, 
+                50.0
+            ], 
+            "preset": "node_preset_CrowdChOpOutput"
+        }, 
+        "nullLinearSpeedShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 0.1", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                394.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "orientationCorrectionToDesiredShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: -", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                902.0
+            ], 
+            "preset": "node_preset_CrowdChOpOperation"
+        }, 
+        "positiveDistToChangeOfOriShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[1]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Op: max", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                750.0, 
+                790.0
+            ], 
+            "preset": "node_preset_CrowdChOpOperation"
+        }, 
+        "rightVisionAllEntitiesSensorShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                536.0
+            ], 
+            "preset": "node_preset_CrowdChOpSensorInput"
+        }, 
+        "rightVisionSoldierSensorShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpSensorInput"
+        }, 
+        "soldierSpeedOutputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Previous ChOps[0]", 
+                    "plug": false, 
+                    "preset": "attr_preset_previousChops", 
+                    "socket": true
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Channel: Entity Desired Speed", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1750.0, 
+                1246.0
+            ], 
+            "preset": "node_preset_CrowdChOpOutput"
+        }, 
+        "turnLeftAngleValueShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 90", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                1104.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "turnRightAngleValueShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: -90", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                1250.0, 
+                648.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }, 
+        "zeroInputShape": {
+            "alternate": true, 
+            "attributes": [
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Next ChOps", 
+                    "plug": true, 
+                    "preset": "attr_preset_nextChops", 
+                    "socket": false
+                }, 
+                {
+                    "dataType": "<type 'str'>", 
+                    "name": "Expression: 0", 
+                    "plug": false, 
+                    "preset": "attr_preset_config", 
+                    "socket": false
+                }
+            ], 
+            "position": [
+                500.0, 
+                850.0
+            ], 
+            "preset": "node_preset_CrowdChOpInput"
+        }
+    }
+}
