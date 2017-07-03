@@ -29,6 +29,11 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_AttrDeleted = QtCore.Signal(object, object)
     signal_AttrEdited = QtCore.Signal(object, object, object)
 
+    signal_PlugConnected = QtCore.Signal(object, object, object, object)
+    signal_PlugDisconnected = QtCore.Signal(object, object, object, object)
+    signal_SocketConnected = QtCore.Signal(object, object, object, object)
+    signal_SocketDisconnected = QtCore.Signal(object, object, object, object)
+
     signal_GraphSaved = QtCore.Signal()
     signal_GraphLoaded = QtCore.Signal()
     signal_GraphCleared = QtCore.Signal()
@@ -1783,11 +1788,19 @@ class PlugItem(SlotItem):
         if connection not in self.connections:
             self.connections.append(connection)
 
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_PlugConnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
     def disconnect(self, connection):
         """
         Disconnect the given connection from this plug item.
 
         """
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_PlugDisconnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
         # Remove connected socket from plug
         if connection.socketItem in self.connected_slots:
             self.connected_slots.remove(connection.socketItem)
@@ -1900,11 +1913,19 @@ class SocketItem(SlotItem):
         if connection not in self.connections:
             self.connections.append(connection)
 
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_SocketConnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
     def disconnect(self, connection):
         """
         Disconnect the given connection from this socket item.
 
         """
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_SocketDisconnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
         # Remove connected plugs
         if connection.plugItem in self.connected_slots:
             self.connected_slots.remove(connection.plugItem)

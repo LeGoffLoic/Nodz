@@ -110,6 +110,13 @@ signal_AttrCreated(nodeName, attrIndex)
 signal_AttrDeleted(nodeName, attrIndex)
 signal_AttrEdited(nodeName, oldIndex, newIndex)
 ```
+Connections
+```python
+signal_PlugConnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+signal_PlugDisconnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+signal_SocketConnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+signal_SocketDisconnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+```
 Graph
 ```python
 signal_GraphSaved()
