@@ -41,6 +41,15 @@ def on_attrDeleted(nodeName, attrId):
 def on_attrEdited(nodeName, oldId, newId):
     print 'attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId)
 
+# Connections
+@QtCore.Slot(str, str, str, str)
+def on_connected(srcNodeName, srcPlugName, destNodeName, dstSocketName):
+    print 'connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName)
+
+@QtCore.Slot(str, str, str, str)
+def on_disconnected(srcNodeName, srcPlugName, destNodeName, dstSocketName):
+    print 'disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName)
+
 # Graph
 @QtCore.Slot()
 def on_graphSaved():
@@ -71,6 +80,11 @@ nodz.signal_NodeSelected.connect(on_nodeSelected)
 nodz.signal_AttrCreated.connect(on_attrCreated)
 nodz.signal_AttrDeleted.connect(on_attrDeleted)
 nodz.signal_AttrEdited.connect(on_attrEdited)
+
+nodz.signal_PlugConnected.connect(on_connected)
+nodz.signal_SocketConnected.connect(on_connected)
+nodz.signal_PlugDisconnected.connect(on_disconnected)
+nodz.signal_SocketDisconnected.connect(on_disconnected)
 
 nodz.signal_GraphSaved.connect(on_graphSaved)
 nodz.signal_GraphLoaded.connect(on_graphLoaded)
