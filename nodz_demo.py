@@ -94,10 +94,10 @@ nodz.createAttribute(node=nodeA, name='Aattr2', index=-1, preset='attr_preset_1'
                      plug=True, socket=False, dataType=int)
 
 nodz.createAttribute(node=nodeA, name='Aattr3', index=-1, preset='attr_preset_2',
-                     plug=True, socket=False, dataType=int)
+                     plug=True, socket=True, dataType=int)
 
 nodz.createAttribute(node=nodeA, name='Aattr4', index=-1, preset='attr_preset_2',
-                     plug=True, socket=False, dataType=str)
+                     plug=True, socket=True, dataType=str)
 
 
 
@@ -145,6 +145,10 @@ nodz.createAttribute(node=nodeC, name='Cattr8', index=-1, preset='attr_preset_3'
 # means the following code to alter nodes won't work but saving/loading/
 # clearing/evaluating will.
 
+
+# Connection creation
+nodz.createConnection('nodeB', 'Battr2', 'nodeA', 'Aattr3')
+nodz.createConnection('nodeB', 'Battr1', 'nodeA', 'Aattr4')
 
 # Attributes Edition
 nodz.editAttribute(node=nodeC, index=0, newName=None, newIndex=-1)
