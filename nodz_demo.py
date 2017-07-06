@@ -152,6 +152,10 @@ nodz.createAttribute(node=nodeC, name='Cattr8', index=-1, preset='attr_preset_3'
 # clearing/evaluating will.
 
 
+# Connection creation
+nodz.createConnection('nodeB', 'Battr2', 'nodeA', 'Aattr3')
+nodz.createConnection('nodeB', 'Battr1', 'nodeA', 'Aattr4')
+
 # Attributes Edition
 nodz.editAttribute(node=nodeC, index=0, newName=None, newIndex=-1)
 nodz.editAttribute(node=nodeC, index=-1, newName='NewAttrName', newIndex=None)

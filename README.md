@@ -82,6 +82,10 @@ def createAttribute(node, name, index, preset, plug, socket, dataType)
 def deleteAttribute(node, index)
 def editAttribute( node, index, newName, newIndex)
 ```
+Connections
+```python
+def createConnection(sourceNode, sourceAttr, targetNode, targetAttr)
+```
 Graph
 ```python
 def saveGraph(filePath)

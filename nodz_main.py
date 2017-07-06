@@ -893,6 +893,7 @@ class Nodz(QtWidgets.QGraphicsView):
         connection.updatePath()
 
         self.scene().addItem(connection)
+        return connection
 
     def evaluateGraph(self):
         """
