@@ -78,6 +78,10 @@ def on_graphEvaluated():
 def on_keyPressed(key):
     print 'key pressed : ', key
 
+    if key==76:  #l
+        nodz.autoLayoutGraph(nodz.selectedNodes)
+
+
 nodz.signal_NodeCreated.connect(on_nodeCreated)
 nodz.signal_NodeDeleted.connect(on_nodeDeleted)
 nodz.signal_NodeEdited.connect(on_nodeEdited)
