@@ -1,7 +1,7 @@
 import string
 import random
 
-from Qt import QtCore, QtWidgets
+from Qt import QtGui, QtCore, QtWidgets
 import nodz_main
 
 try:
@@ -36,6 +36,26 @@ def updateChOpsNodzDebugOutput(nodz, outputValues):
         #update node output
         attributeString = "output: {}".format(outputValues[chOpName])
         nodz.editAttribute(node, foundAttrIndex, attributeString)
+
+
+
+def demoNodeCreator(nodzInst, nodeName, pos):
+    if nodeName in nodeList:
+        id=0
+        uniqueNodeName = '{}_{}'.format(nodeName, id)
+        while uniqueNodeName in nodzInst.scene().nodes.keys():
+            id+=1
+            uniqueNodeName = '{}_{}'.format(nodeName, id)
+
+        nodzInst.createNode(name=uniqueNodeName, position=pos)
+    else:
+        print "{} is node a recognized node type. Known types are: {}".format(nodeName, nodeList)
+
+nodeList = ["NodeTypeA", "NodeTypeB", "NodeTypeC", "ExtremellyLongAndAnnoyingString"]
+nodz.initNodeCreationHelper(nodeList, demoNodeCreator)
+
+
+
 
 ######################################################################
 # Test signals
@@ -108,6 +128,9 @@ def on_keyPressed(key):
         outputValues["chOpConverterShape1"] = "<<{} {} {}>>".format(random.random(), random.random(), random.random())
         outputValues["chOpOutputShape1"] = "<<{} {} {}>>".format(random.random(), random.random(), random.random())
         updateChOpsNodzDebugOutput(nodz, outputValues)
+    
+    if key==76:  #l
+        nodz.autoLayoutGraph(nodz.selectedNodes)
 
 
 nodz.signal_NodeCreated.connect(on_nodeCreated)
