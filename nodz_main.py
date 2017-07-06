@@ -413,13 +413,13 @@ class Nodz(QtWidgets.QGraphicsView):
         Wrapper to return selected items.
 
         """
-        selected_nodes = list()
+        self.selectedNodes = list()
         if self.scene().selectedItems():
             for node in self.scene().selectedItems():
-                selected_nodes.append(node.name)
+                self.selectedNodes.append(node.name)
 
-            # Emit signal.
-            self.signal_NodeSelected.emit(selected_nodes)
+        # Emit signal.
+        self.signal_NodeSelected.emit(self.selectedNodes)
 
 
     ##################################################################
@@ -754,26 +754,30 @@ class Nodz(QtWidgets.QGraphicsView):
 
 
     # GRAPH
-    def autoLayoutGraph(self, margin = 50):
+    def autoLayoutGraph(self, nodes = None, margin = 50):
         """
         Auto set nodes positions in the graph according to their connections.
 
         """
 
         nodeWidth = 300    #default value, will be replaced by node.baseWidth + margin when iterating on the first node
-
-        nodes = self.scene().nodes
+        sceneNodes = self.scene().nodes.keys()
+        if (nodes is None) or len(nodes)==0:
+            nodes = sceneNodes
         rootNodes = []
         alreadyPlacedNodes = []
 
         # root nodes (without connection on the plug)
-        for nodeName, node in nodes.items():
-            nodeWidth = node.baseWidth + margin
-            connectionCount=0
-            for plug in node.plugs.values():
-                connectionCount += len(plug.connections)
-            if connectionCount==0:
-                rootNodes.append(node)
+        for nodeName in sceneNodes:
+            node = self.scene().nodes[nodeName]
+            if node is not None:
+                nodeWidth = node.baseWidth + margin
+                connectionCount=0
+                isRoot = True
+                for plug in node.plugs.values():
+                    isRoot &= (len(plug.connections)==0)
+                if isRoot:
+                    rootNodes.append(node)
         
         maxGraphWidth = 0
         rootGraphs = [[[0 for x in range(0)] for y in range(0)] for z in range(0)]
@@ -798,24 +802,36 @@ class Nodz(QtWidgets.QGraphicsView):
                                 doNextGraphLevel = True
                 currentGraphLevel+=1
 
-            graphWidth = len(rootGraph) * nodeWidth
+            graphWidth = len(rootGraph) * (nodeWidth+margin)
             maxGraphWidth = max(graphWidth, maxGraphWidth)
             rootGraphs.append(rootGraph)
 
+        #update scne rect if needed
+        if maxGraphWidth > self.scene().width():
+            sceneRect = self.scene().sceneRect()
+            sceneRect.setWidth(maxGraphWidth)
+            self.scene().setSceneRect(sceneRect)
+
         baseYpos = margin
         for rootGraph in rootGraphs:
-            #set positions...    
-            currentXpos = maxGraphWidth-nodeWidth
+            #set positions...
+            currentXpos = max(0, 0.5*(self.scene().width()-maxGraphWidth)) + maxGraphWidth-nodeWidth  #middle of the view
             nextBaseYpos = baseYpos
             for nodesAtLevel in rootGraph:
                 currentYpos = baseYpos
                 for node in nodesAtLevel:
-                    if node not in alreadyPlacedNodes:
+                    if len(node.plugs)>0:
+                        if len(node.plugs.values()[0].connections)>0:
+                            parentPosition = node.plugs.values()[0].connections[0].socketItem.parentItem().pos()
+                            currentXpos = parentPosition.x() - nodeWidth
+                            #currentYpos = parentPosition.y()
+                    if (node not in alreadyPlacedNodes) and (node.name in nodes):
                         alreadyPlacedNodes.append(node)
                         node_pos = QtCore.QPointF(currentXpos, currentYpos)
                         node.setPos(node_pos)
-                        currentYpos += node.height + margin
-                        nextBaseYpos = max(nextBaseYpos, currentYpos)
+
+                    currentYpos += node.height + margin
+                    nextBaseYpos = max(nextBaseYpos, currentYpos)
                 currentXpos -= nodeWidth
             baseYpos = nextBaseYpos
 
