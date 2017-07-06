@@ -4,7 +4,7 @@ import json
 
 from Qt import QtGui, QtCore, QtWidgets
 import nodz_utils as utils
-
+import nodz_extra
 
 
 defaultConfigPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'default_config.json')
@@ -66,6 +66,9 @@ class Nodz(QtWidgets.QGraphicsView):
         # Display options.
         self.currentState = 'DEFAULT'
         self.pressedKeys = list()
+
+        # Node creation helper
+        self.nodeCreationPopup = None
 
     def wheelEvent(self, event):
         """
@@ -299,6 +302,12 @@ class Nodz(QtWidgets.QGraphicsView):
         if event.key() == QtCore.Qt.Key_S:
             self._nodeSnap = True
 
+        if event.key() == QtCore.Qt.Key_Tab:
+            self.nodeCreationPopup.popup()
+
+        if event.key() == QtCore.Qt.Key_Escape:
+            self.nodeCreationPopup.popdown()
+
         # Emit signal.
         self.signal_KeyPressed.emit(event.key())
 
@@ -471,6 +480,15 @@ class Nodz(QtWidgets.QGraphicsView):
         # Connect signals.
         self.scene().selectionChanged.connect(self._returnSelection)
 
+    def initNodeCreationHelper(self, completerNodeList=[], nodeCreatorCallback=None):
+        """
+        Setup the node's creation helper that is available from the tab key
+
+        """
+        self.nodeCreationPopup = nodz_extra.QtPopupLineEditWidget(self.scene().views()[0])
+        self.nodeCreationPopup.setNodesList(completerNodeList)
+        if nodeCreatorCallback is not None:
+            self.nodeCreationPopup.nodeCreator = nodeCreatorCallback
 
     # NODES
     def createNode(self, name='default', preset='node_default', position=None, alternate=True):
