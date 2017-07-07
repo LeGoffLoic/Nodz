@@ -8,6 +8,8 @@ Nodz is partially customizable via a configuration file that let you change colo
 
 ***If you find any errors/bugs/flaws or anything bad, feel free to let me know so I can fix it for the next persons that would like to download nodz.***
 
+***PLEASE MAKE SURE TO CREATE 1 PULL REQUEST PER ISSUE ! THIS IS EASIER AND CLEANER TO PROCESS***
+
 Nodz in under the [MIT license](LICENSE.txt).
 
 [WATCH DEMO HERE](https://vimeo.com/219933604)
