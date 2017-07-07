@@ -27,16 +27,16 @@ Nodz in under the [MIT license](LICENSE.txt).
 
 Nodz needs to be in a PYTHONPATH.
 
-**Qt.py is very important as Nodz is based on it in order to work for multiple versions of Qt.**  
-Short and easy story for lazy peeps. :smile:   [This file](https://raw.githubusercontent.com/mottosso/Qt.py/master/Qt.py) has to be available within a PYTHONPATH.  
+**Qt.py is very important as Nodz is based on it in order to work for multiple versions of Qt.**
+Short and easy story for lazy peeps. :smile:   [This file](https://raw.githubusercontent.com/mottosso/Qt.py/master/Qt.py) has to be available within a PYTHONPATH.
 
 
 ###
 ## Configuration file
 
-Nodz comes with a default [configuration file](default_config.json), it is specified what can be removed and what can't be.  
-If this file stays in the default location, it is auto loaded BUT you still need to apply it to Nodz (look at [nodz_demo.py](nodz_demo.py) lines 5/6)  
-Be careful when editing it, if you are missing a "**,**" it will error. So don't screw up. :smile: 
+Nodz comes with a default [configuration file](default_config.json), it is specified what can be removed and what can't be.
+If this file stays in the default location, it is auto loaded BUT you still need to apply it to Nodz (look at [nodz_demo.py](nodz_demo.py) lines 5/6)
+Be careful when editing it, if you are missing a "**,**" it will error. So don't screw up. :smile:
 
 
 
@@ -84,6 +84,10 @@ def createAttribute(node, name, index, preset, plug, socket, dataType)
 def deleteAttribute(node, index)
 def editAttribute( node, index, newName, newIndex)
 ```
+Connections
+```python
+def createConnection(sourceNode, sourceAttr, targetNode, targetAttr)
+```
 Graph
 ```python
 def saveGraph(filePath)
@@ -95,7 +99,7 @@ def clearGraph()
 ###
 ## Signals
 
-Nodz also offers you some signals, most of them can feel redundant considering the design of the library but I'm sure some of you will find a use for it. It's better to have them just in case than not having them.   
+Nodz also offers you some signals, most of them can feel redundant considering the design of the library but I'm sure some of you will find a use for it. It's better to have them just in case than not having them.
 **They are absolutly not mandatory in order for nodz to work.**
 
 Nodes
