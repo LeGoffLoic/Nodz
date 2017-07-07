@@ -29,6 +29,11 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_AttrDeleted = QtCore.Signal(object, object)
     signal_AttrEdited = QtCore.Signal(object, object, object)
 
+    signal_PlugConnected = QtCore.Signal(object, object, object, object)
+    signal_PlugDisconnected = QtCore.Signal(object, object, object, object)
+    signal_SocketConnected = QtCore.Signal(object, object, object, object)
+    signal_SocketDisconnected = QtCore.Signal(object, object, object, object)
+
     signal_GraphSaved = QtCore.Signal()
     signal_GraphLoaded = QtCore.Signal()
     signal_GraphCleared = QtCore.Signal()
@@ -877,6 +882,22 @@ class Nodz(QtWidgets.QGraphicsView):
         self.signal_GraphLoaded.emit()
 
     def createConnection(self, sourceNode, sourceAttr, targetNode, targetAttr):
+        """
+        Create a manual connection.
+
+        :type  sourceNode: str.
+        :param sourceNode: Node that emits the connection.
+
+        :type  sourceAttr: str.
+        :param sourceAttr: Attribute that emits the connection.
+
+        :type  targetNode: str.
+        :param targetNode: Node that receives the connection.
+
+        :type  targetAttr: str.
+        :param targetAttr: Attribute that receives the connection.
+
+        """
         plug = self.scene().nodes[sourceNode].plugs[sourceAttr]
         socket = self.scene().nodes[targetNode].sockets[targetAttr]
 
@@ -893,6 +914,7 @@ class Nodz(QtWidgets.QGraphicsView):
         connection.updatePath()
 
         self.scene().addItem(connection)
+
         return connection
 
     def evaluateGraph(self):
@@ -1717,11 +1739,19 @@ class PlugItem(SlotItem):
         if connection not in self.connections:
             self.connections.append(connection)
 
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_PlugConnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
     def disconnect(self, connection):
         """
         Disconnect the given connection from this plug item.
 
         """
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_PlugDisconnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
         # Remove connected socket from plug
         if connection.socketItem in self.connected_slots:
             self.connected_slots.remove(connection.socketItem)
@@ -1834,11 +1864,19 @@ class SocketItem(SlotItem):
         if connection not in self.connections:
             self.connections.append(connection)
 
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_SocketConnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
     def disconnect(self, connection):
         """
         Disconnect the given connection from this socket item.
 
         """
+        # Emit signal.
+        nodzInst = self.scene().views()[0]
+        nodzInst.signal_SocketDisconnected.emit(connection.plugNode, connection.plugAttr, connection.socketNode, connection.socketAttr)
+
         # Remove connected plugs
         if connection.plugItem in self.connected_slots:
             self.connected_slots.remove(connection.plugItem)

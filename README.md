@@ -8,6 +8,8 @@ Nodz is partially customizable via a configuration file that let you change colo
 
 ***If you find any errors/bugs/flaws or anything bad, feel free to let me know so I can fix it for the next persons that would like to download nodz.***
 
+***PLEASE MAKE SURE TO CREATE 1 PULL REQUEST PER ISSUE ! THIS IS EASIER AND CLEANER TO PROCESS***
+
 Nodz in under the [MIT license](LICENSE.txt).
 
 [WATCH DEMO HERE](https://vimeo.com/219933604)
@@ -25,16 +27,16 @@ Nodz in under the [MIT license](LICENSE.txt).
 
 Nodz needs to be in a PYTHONPATH.
 
-**Qt.py is very important as Nodz is based on it in order to work for multiple versions of Qt.**  
-Short and easy story for lazy peeps. :smile:   [This file](https://raw.githubusercontent.com/mottosso/Qt.py/master/Qt.py) has to be available within a PYTHONPATH.  
+**Qt.py is very important as Nodz is based on it in order to work for multiple versions of Qt.**
+Short and easy story for lazy peeps. :smile:   [This file](https://raw.githubusercontent.com/mottosso/Qt.py/master/Qt.py) has to be available within a PYTHONPATH.
 
 
 ###
 ## Configuration file
 
-Nodz comes with a default [configuration file](default_config.json), it is specified what can be removed and what can't be.  
-If this file stays in the default location, it is auto loaded BUT you still need to apply it to Nodz (look at [nodz_demo.py](nodz_demo.py) lines 5/6)  
-Be careful when editing it, if you are missing a "**,**" it will error. So don't screw up. :smile: 
+Nodz comes with a default [configuration file](default_config.json), it is specified what can be removed and what can't be.
+If this file stays in the default location, it is auto loaded BUT you still need to apply it to Nodz (look at [nodz_demo.py](nodz_demo.py) lines 5/6)
+Be careful when editing it, if you are missing a "**,**" it will error. So don't screw up. :smile:
 
 
 
@@ -97,7 +99,7 @@ def clearGraph()
 ###
 ## Signals
 
-Nodz also offers you some signals, most of them can feel redundant considering the design of the library but I'm sure some of you will find a use for it. It's better to have them just in case than not having them.   
+Nodz also offers you some signals, most of them can feel redundant considering the design of the library but I'm sure some of you will find a use for it. It's better to have them just in case than not having them.
 **They are absolutly not mandatory in order for nodz to work.**
 
 Nodes
@@ -112,6 +114,13 @@ Attributes
 signal_AttrCreated(nodeName, attrIndex)
 signal_AttrDeleted(nodeName, attrIndex)
 signal_AttrEdited(nodeName, oldIndex, newIndex)
+```
+Connections
+```python
+signal_PlugConnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+signal_PlugDisconnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+signal_SocketConnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
+signal_SocketDisconnected(srcNodeName, plugAttribute, dstNodeName, socketAttribue)
 ```
 Graph
 ```python
