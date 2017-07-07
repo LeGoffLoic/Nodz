@@ -7,7 +7,7 @@ import nodz_utils as utils
 
 
 
-defautConfigPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'default_config.json')
+defaultConfigPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'default_config.json')
 config = None
 
 
@@ -393,7 +393,7 @@ class Nodz(QtWidgets.QGraphicsView):
         # end if
         bbw = bbx_max - bbx_min
         bbh = bby_max - bby_min
-        return QtCore.QRect(bbx_min, bby_min, bbw, bbh)
+        return QtCore.QRectF(QtCore.QRect(bbx_min, bby_min, bbw, bbh))
 
     def _deleteSelectedNodes(self):
         """
@@ -426,7 +426,7 @@ class Nodz(QtWidgets.QGraphicsView):
     # API
     ##################################################################
 
-    def loadConfig(self, filePath=defautConfigPath):
+    def loadConfig(self, filePath=defaultConfigPath):
         """
         Set a specific configuration for this instance of Nodz.
 
@@ -435,7 +435,7 @@ class Nodz(QtWidgets.QGraphicsView):
                          use.
 
         """
-        data = utils._loadConfig(filePath=defautConfigPath)
+        data = utils._loadConfig(filePath)
 
         global config
         config = data
@@ -795,9 +795,9 @@ class Nodz(QtWidgets.QGraphicsView):
 
 
         # Save data.
-        if os.path.exists(filePath):
+        try:
             utils._saveData(filePath=filePath, data=data)
-        else:
+        except:
             print 'Invalid path : {0}'.format(filePath)
             print 'Save aborted !'
             return False
