@@ -502,8 +502,7 @@ class Nodz(QtWidgets.QGraphicsView):
             print 'Node creation aborted !'
             return
         else:
-            nodeItem = NodeItem(name=name, alternate=alternate, preset=preset,
-                                config=self.config)
+            nodeItem = self.createNodeItem(name, alternate, preset)
 
             # Store node in scene.
             self.scene().nodes[name] = nodeItem
@@ -901,7 +900,9 @@ class Nodz(QtWidgets.QGraphicsView):
         plug = self.scene().nodes[sourceNode].plugs[sourceAttr]
         socket = self.scene().nodes[targetNode].sockets[targetAttr]
 
-        connection = ConnectionItem(plug.center(), socket.center(), plug, socket)
+        connection = self.createConnectionItem(plug.center(),
+                                               socket.center(),
+                                               plug, socket)
 
         connection.plugNode = plug.parentItem().name
         connection.plugAttr = plug.attribute
@@ -953,6 +954,23 @@ class Nodz(QtWidgets.QGraphicsView):
     # END API
     ##################################################################
 
+    ##################################################################
+    # SUBCLASSER API, these are not to be called directly, the rest of
+    # Nodz does that, instead they are intended to be re-implemented
+    # in your subclass of Nodz so that instances of the corresponding
+    # subclasses can be returned
+    ##################################################################
+    def createNodeItem(self, name, alternate, preset):
+        return NodeItem(name, alternate, preset, self.config)
+
+    def createConnectionItem(self, plug_pos, socket_pos, plug, socket):
+        return ConnectionItem(plug_pos, socket_pos, plug, socket)
+
+    def createPlugItem(self, parent, attribute, index, preset, dataType):
+        return PlugItem(parent, attribute, index, preset, dataType)
+
+    def createSocketItem(self, parent, attribute, index, preset, dataType):
+        return SocketItem(parent, attribute, index, preset, dataType)
 
 class NodeScene(QtWidgets.QGraphicsScene):
 
@@ -1196,23 +1214,25 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
         self.attrPreset = preset
 
+        nodzInst = self.scene().views()[0]
+
         # Create a plug connection item.
         if plug:
-            plugInst = PlugItem(parent=self,
-                                attribute=name,
-                                index=self.attrCount,
-                                preset=preset,
-                                dataType=dataType)
+            plugInst = nodzInst.createPlugItem(parent=self,
+                                               attribute=name,
+                                               index=self.attrCount,
+                                               preset=preset,
+                                               dataType=dataType)
 
             self.plugs[name] = plugInst
 
         # Create a socket connection item.
         if socket:
-            socketInst = SocketItem(parent=self,
-                                    attribute=name,
-                                    index=self.attrCount,
-                                    preset=preset,
-                                    dataType=dataType)
+            socketInst = nodzInst.createSocketItem(parent=self,
+                                                   attribute=name,
+                                                   index=self.attrCount,
+                                                   preset=preset,
+                                                   dataType=dataType)
 
             self.sockets[name] = socketInst
 
@@ -1514,15 +1534,15 @@ class SlotItem(QtWidgets.QGraphicsItem):
 
         """
         if event.button() == QtCore.Qt.LeftButton:
-            self.newConnection = ConnectionItem(self.center(),
-                                                self.mapToScene(event.pos()),
-                                                self,
-                                                None)
+            nodzInst = self.scene().views()[0]
+            self.newConnection = nodzInst.createConnectionItem(self.center(),
+                                                               self.mapToScene(event.pos()),
+                                                               self,
+                                                               None)
 
             self.connections.append(self.newConnection)
             self.scene().addItem(self.newConnection)
 
-            nodzInst = self.scene().views()[0]
             nodzInst.drawingConnection = True
             nodzInst.sourceSlot = self
             nodzInst.currentDataType = self.dataType
@@ -1601,10 +1621,9 @@ class SlotItem(QtWidgets.QGraphicsItem):
         path.addRect(self.boundingRect())
         return path
 
-    def paint(self, painter, option, widget):
+    def configurePainter(self, painter, option, widget):
         """
-        Paint the Slot.
-
+        setup a painter for the paint() method
         """
         painter.setBrush(self.brush)
         painter.setPen(self.pen)
@@ -1624,6 +1643,12 @@ class SlotItem(QtWidgets.QGraphicsItem):
                     painter.setPen(_penValid)
                     painter.setBrush(self.brush)
 
+    def paint(self, painter, option, widget):
+        """
+        Paint the Slot.
+
+        """
+        self.configurePainter(painter, option, widget)
         painter.drawEllipse(self.boundingRect())
 
     def center(self):

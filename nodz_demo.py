@@ -1,5 +1,6 @@
 from Qt import QtCore, QtWidgets
 import nodz_main
+import sys
 
 try:
     app = QtWidgets.QApplication([])
@@ -7,7 +8,47 @@ except:
     # I guess we're running somewhere that already has a QApp created
     app = None
 
-nodz = nodz_main.Nodz(None)
+
+if '--subclass' in sys.argv:
+    # demonstrate sub-classing as a way of customizing drawing
+    class NodzDemo(nodz_main.Nodz):
+        def __init__(self):
+            super(NodzDemo, self).__init__(None)
+
+        def createPlugItem(self, parent, attribute, index, preset, dataType):
+            return DemoPlugItem(parent, attribute, index, preset, dataType)
+
+        def createSocketItem(self, parent, attribute, index, preset, dataType):
+            return DemoSocketItem(parent, attribute, index, preset, dataType)
+
+
+    class DemoPlugItem(nodz_main.PlugItem):
+        def __init__(self, parent, attribute, index, preset, dataType):
+            super(DemoPlugItem, self).__init__(parent, attribute, index,
+                                               preset, dataType)
+
+        def paint(self, painter, option, widget):
+            self.configurePainter(painter, option, widget)
+            if self.dataType == str:
+                painter.drawRect(self.boundingRect())
+            else:
+                painter.drawEllipse(self.boundingRect())
+
+    class DemoSocketItem(nodz_main.SocketItem):
+        def __init__(self, parent, attribute, index, preset, dataType):
+            super(DemoSocketItem, self).__init__(parent, attribute, index,
+                                               preset, dataType)
+
+        def paint(self, painter, option, widget):
+            self.configurePainter(painter, option, widget)
+            if self.dataType == str:
+                painter.drawRect(self.boundingRect())
+            else:
+                painter.drawEllipse(self.boundingRect())
+
+    nodz = NodzDemo()
+else:
+    nodz = nodz_main.Nodz(None)
 # nodz.loadConfig(filePath='')
 nodz.initialize()
 nodz.show()
