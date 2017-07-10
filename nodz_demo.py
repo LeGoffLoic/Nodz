@@ -1,6 +1,6 @@
 from Qt import QtCore, QtWidgets
 import nodz_main
-import nodz_extra
+import nodz_addons
 
 try:
     app = QtWidgets.QApplication([])
@@ -218,7 +218,7 @@ def demoNodeCreator(nodzInst, nodeName, pos):
         print "{} is node a recognized node type. Known types are: {}".format(nodeName, nodeList)
 
 nodeList = ["NodeTypeA", "NodeTypeB", "NodeTypeC", "LongAndAnnoyingStringThatWillDisplayFarOfTheBounds"]
-nodeCreationPopup = nodz_extra.QtPopupLineEditWidget(nodz.scene().views()[0])
+nodeCreationPopup = nodz_addons.QtPopupLineEditWidget(nodz.scene().views()[0])
 nodeCreationPopup.setNodesList(nodeList)
 nodeCreationPopup.nodeCreator = demoNodeCreator
 

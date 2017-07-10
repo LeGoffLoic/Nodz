@@ -2,6 +2,24 @@ from Qt import QtGui, QtCore, QtWidgets
 import nodz_main
 
 class QtPopupLineEditWidget(QtWidgets.QLineEdit):
+    """
+    An addon to Nodz that allows to use a line edit widget and type a node to create it
+    Usage:
+    nodeCreationPopup = nodz_addons.QtPopupLineEditWidget(nodz.scene().views()[0])
+
+    nodeList = ["NodeTypeA", "NodeTypeB", "NodeTypeC", "LongAndAnnoyingStringThatWillDisplayFarOfTheBounds"]
+    nodeCreationPopup.setNodesList(nodeList)
+
+    nodeCreator(nodzInst, nodeName, pos):
+        nodzInst.createNode(name=nodeName, position=pos)
+    nodeCreationPopup.nodeCreator = nodeCreator
+
+    # Pop up:
+    nodeCreationPopup.popup()
+    # Pop down:
+    nodeCreationPopup.popdown()
+
+    """
 
     @staticmethod
     def defaultNodeCreator(nodzInst, nodeName, pos):
@@ -22,6 +40,10 @@ class QtPopupLineEditWidget(QtWidgets.QLineEdit):
         self.returnPressed.connect(self.onReturnPressedSlot)
 
     def popup(self):
+        """
+        Pop-up the line edit widget at the mouse's position
+
+        """
         position = self.parentWidget().mapFromGlobal(QtGui.QCursor.pos())
         self.move(position)
         self.clear()
@@ -30,11 +52,19 @@ class QtPopupLineEditWidget(QtWidgets.QLineEdit):
         self.setNodesList(self.nodeList)
 
     def popdown(self):
+        """
+        Pop-down the line edit widget
+
+        """
         self.hide()
         self.clear()
         self.parentWidget().setFocus()
 
     def setNodesList(self, nodeList):
+        """
+        Set the list of nodes to use for the auto-completion
+
+        """
         self.nodeList = nodeList
         self.completer = QtGui.QCompleter(self.nodeList, self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
