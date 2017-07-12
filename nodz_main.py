@@ -2,7 +2,7 @@ import os
 import re
 import json
 
-from Qt import QtGui, QtCore, QtWidgets
+from glm.Qtpy.Qt import QtGui, QtCore, QtWidgets
 import nodz_utils as utils
 import nodz_extra
 

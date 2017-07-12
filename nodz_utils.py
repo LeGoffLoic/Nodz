@@ -1,7 +1,7 @@
 import os
 import json
 import re
-from Qt import QtCore, QtGui
+from glm.Qtpy.Qt import QtCore, QtGui
 
 
 def _convertDataToColor(data=None, alternate=False, av=20):
