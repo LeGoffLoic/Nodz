@@ -1,4 +1,4 @@
-from Qt import QtGui, QtCore, QtWidgets
+from glm.Qtpy.Qt import QtGui, QtCore, QtWidgets
 import nodz_main
 
 class QtPopupLineEditWidget(QtWidgets.QLineEdit):
