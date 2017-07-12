@@ -1,3 +1,4 @@
+from glm.Qtpy import Qt
 from glm.Qtpy.Qt import QtGui, QtCore, QtWidgets
 import nodz_main
 
@@ -36,7 +37,10 @@ class QtPopupLineEditWidget(QtWidgets.QLineEdit):
 
     def setNodesList(self, nodeList):
         self.nodeList = nodeList
-        self.completer = QtGui.QCompleter(self.nodeList, self)
+        if Qt.__binding__ == 'PySide2':
+            self.completer = QtWidgets.QCompleter(self.nodeList, self)
+        else:   #PySide
+            self.completer = QtGui.QCompleter(self.nodeList, self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.setCompleter(self.completer)
         self.completer.activated.connect(self.onCompleterActivatedSlot)
