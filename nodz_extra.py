@@ -29,6 +29,7 @@ class QtPopupLineEditWidget(QtWidgets.QLineEdit):
         self.show()
         self.setFocus()
         self.setNodesList(self.nodeList)
+        self.completer.complete()
 
     def popdown(self):
         self.hide()
