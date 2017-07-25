@@ -783,7 +783,7 @@ class Nodz(QtWidgets.QGraphicsView):
         if (nodes is None) or len(nodes)==0:
             nodes = sceneNodes
         rootNodes = []
-        alreadyPlacedNodes = []
+        alreadyVisitedNodes = []
 
         # root nodes (without connection on the plug)
         for nodeName in sceneNodes:
@@ -813,23 +813,28 @@ class Nodz(QtWidgets.QGraphicsView):
                         if attr in node.sockets:
                             socket = node.sockets[attr]
                             for connection in socket.connections:
-                                if len(rootGraph)<=(currentGraphLevel+1):
-                                    emptyArray = []
-                                    rootGraph.append(emptyArray)
-                                rootGraph[currentGraphLevel+1].append(connection.plugItem.parentItem())
-                                doNextGraphLevel = True
+                                node = connection.plugItem.parentItem()
+                                if (node not in alreadyVisitedNodes):
+                                    alreadyVisitedNodes.append(node)
+
+                                    if len(rootGraph)<=(currentGraphLevel+1):
+                                        emptyArray = []
+                                        rootGraph.append(emptyArray)
+                                    rootGraph[currentGraphLevel+1].append(connection.plugItem.parentItem())
+                                    doNextGraphLevel = True
                 currentGraphLevel+=1
 
             graphWidth = len(rootGraph) * (nodeWidth+margin)
             maxGraphWidth = max(graphWidth, maxGraphWidth)
             rootGraphs.append(rootGraph)
 
-        #update scne rect if needed
+        #update scene rect if needed
         if maxGraphWidth > self.scene().width():
             sceneRect = self.scene().sceneRect()
             sceneRect.setWidth(maxGraphWidth)
             self.scene().setSceneRect(sceneRect)
 
+        alreadyVisitedNodes = []
         baseYpos = margin
         for rootGraph in rootGraphs:
             #set positions...
@@ -843,8 +848,8 @@ class Nodz(QtWidgets.QGraphicsView):
                             parentPosition = node.plugs.values()[0].connections[0].socketItem.parentItem().pos()
                             currentXpos = parentPosition.x() - nodeWidth
                             #currentYpos = parentPosition.y()
-                    if (node not in alreadyPlacedNodes) and (node.name in nodes):
-                        alreadyPlacedNodes.append(node)
+                    if (node not in alreadyVisitedNodes) and (node.name in nodes):
+                        alreadyVisitedNodes.append(node)
                         node_pos = QtCore.QPointF(currentXpos, currentYpos)
                         node.setPos(node_pos)
 
