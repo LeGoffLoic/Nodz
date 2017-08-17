@@ -412,7 +412,8 @@ class Nodz(QtWidgets.QGraphicsView):
         """
         selected_nodes = list()
         for node in self.scene().selectedItems():
-            selected_nodes.append(node.name)
+            if type(node) is NodeItem:
+                selected_nodes.append(node.name)
             node._remove()
 
         # Emit signal.
@@ -426,7 +427,8 @@ class Nodz(QtWidgets.QGraphicsView):
         self.selectedNodes = list()
         if self.scene().selectedItems():
             for node in self.scene().selectedItems():
-                self.selectedNodes.append(node.name)
+                if type(node) is NodeItem:
+                    self.selectedNodes.append(node.name)
 
         # Emit signal.
         self.signal_NodeSelected.emit(self.selectedNodes)
@@ -1999,6 +2001,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         super(ConnectionItem, self).__init__()
 
         self.setZValue(1)
+        self.lastSelected = False
 
         # Storage.
         self.socketNode = None
@@ -2021,6 +2024,30 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         # Methods.
         self._createStyle()
 
+    @property
+    def pen(self):
+        """
+        Return the pen based on the selection state of the node.
+
+        """
+        if self.isSelected():
+            return self._penSel
+        else:
+            return self._pen
+
+    def paint(self, painter, option, widget):
+        """
+        Paint the node and attributes.
+
+        """
+        #handle selection change...
+        isSelected = self.isSelected()
+        if self.lastSelected != isSelected:
+            self.updatePath()
+            self.lastSelected = isSelected
+
+        super(ConnectionItem, self).paint(painter, option, widget)
+
     def _createStyle(self):
         """
         Read the connection style from the configuration file.
@@ -2032,6 +2059,12 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
 
         self._pen = QtGui.QPen(utils._convertDataToColor(config['connection_color']))
         self._pen.setWidth(config['connection_width'])
+        
+        #make link selectable + selection style
+        self._penSel = QtGui.QPen(utils._convertDataToColor(config['connection_sel_color']))
+        self._penSel.setWidth(config['connection_sel_width'])
+
+        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
 
     def _outputConnectionData(self):
         """
@@ -2043,7 +2076,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
 
     def mousePressEvent(self, event):
         """
-        Snap the Connection to the mouse.
+        Make connection in front of other items
 
         """
         nodzInst = self.scene().views()[0]
@@ -2052,24 +2085,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
             if isinstance(item, ConnectionItem):
                 item.setZValue(0)
 
-        nodzInst.drawingConnection = True
-
-        d_to_target = (event.pos() - self.target_point).manhattanLength()
-        d_to_source = (event.pos() - self.source_point).manhattanLength()
-        if d_to_target < d_to_source:
-            self.target_point = event.pos()
-            self.movable_point = 'target_point'
-            self.target.disconnect(self)
-            self.target = None
-            nodzInst.sourceSlot = self.source
-        else:
-            self.source_point = event.pos()
-            self.movable_point = 'source_point'
-            self.source.disconnect(self)
-            self.source = None
-            nodzInst.sourceSlot = self.target
-
-        self.updatePath()
+        super(ConnectionItem, self).mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
         """
@@ -2103,7 +2119,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
 
     def mouseReleaseEvent(self, event):
         """
-        Create a Connection if possible, otherwise delete it.
+        Create a Connection if possible, otherwise do nothing.
 
         """
         nodzInst = self.scene().views()[0]
@@ -2112,7 +2128,6 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         slot = self.scene().itemAt(event.scenePos().toPoint(), QtGui.QTransform())
 
         if not isinstance(slot, SlotItem):
-            self._remove()
             self.updatePath()
             super(ConnectionItem, self).mouseReleaseEvent(event)
             return
@@ -2166,7 +2181,7 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         Update the path.
 
         """
-        self.setPen(self._pen)
+        self.setPen(self.pen)
 
         path = QtGui.QPainterPath()
         path.moveTo(self.source_point)
