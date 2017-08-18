@@ -99,7 +99,7 @@ class Nodz(QtWidgets.QGraphicsView):
             event.modifiers() == QtCore.Qt.AltModifier):
             self.currentState = 'ZOOM_VIEW'
             self.zoomInitialPos = event.pos()
-            self.initMouse = QtWidgets.QCursor.pos()
+            self.initMouse = QtGui.QCursor.pos()
             self.initMousePos = event.pos()
             self.setInteractive(False)
 
