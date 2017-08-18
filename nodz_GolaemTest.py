@@ -1,7 +1,10 @@
 import string
 import random
 
-from Qt import QtGui, QtCore, QtWidgets
+import os
+print os.environ['PYTHONPATH']  #make sure the golaem data\crowd\glmCrowd\scripts directory is listed here
+
+from glm.Qtpy.Qt import QtGui, QtCore, QtWidgets
 import nodz_main
 
 try:
@@ -10,10 +13,24 @@ except:
     # I guess we're running somewhere that already has a QApp created
     app = None
 
-nodz = nodz_main.Nodz(None)
+nodzWindow = QtWidgets.QMainWindow()
+nodzWindow.setWindowTitle("Golaem Channel Operators")
+iconPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'nodz.png')
+chOpIcon = QtGui.QIcon(iconPath)
+nodzWindow.setWindowIcon(chOpIcon)
+nodzWindow.resize(800, 500)
+nodzWindow.show()
+glmNodzChOpInstance = nodz_main.Nodz(nodzWindow)
+nodzWindow.setCentralWidget(glmNodzChOpInstance)
+
+nodz = glmNodzChOpInstance
 nodz.loadConfig(filePath='golaem_chOpsNodz_config.json')
 nodz.initialize()
 nodz.show()
+
+glmNodzChOpInstance.autoLayoutGraph()
+glmNodzChOpInstance._focus()
+
 
 def updateChOpsNodzDebugOutput(nodz, outputValues):
     for chOpName in outputValues.keys():

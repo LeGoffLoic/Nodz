@@ -20,13 +20,15 @@
     "node_border": 2,
     "node_attr_height": 30,
     "connection_width": 2,
-
+    "connection_sel_width": 5,
+    
     // Default colors > Edit values BUT do not delete.
     "alternate_value": 20,
     "grid_color": [50, 50, 50, 255],
     "slot_border": [50, 50, 50, 255],
     "non_connectable_color": [100, 100, 100, 255],
     "connection_color": [255, 155, 0, 255],
+    "connection_sel_color": [255, 200, 0, 255],    
 
     "node_default": {
         "bg": [130, 130, 130, 255],
