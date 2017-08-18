@@ -15,6 +15,9 @@ except:
 
 nodzWindow = QtWidgets.QMainWindow()
 nodzWindow.setWindowTitle("Golaem Channel Operators")
+iconPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'nodz.png')
+chOpIcon = QtGui.QIcon(iconPath)
+nodzWindow.setWindowIcon(chOpIcon)
 nodzWindow.resize(800, 500)
 nodzWindow.show()
 glmNodzChOpInstance = nodz_main.Nodz(nodzWindow)
