@@ -1283,13 +1283,13 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
         # Remove all sockets connections.
         for socket in self.sockets.values():
-            for connection in socket.connections:
-                connection._remove()
+            while len(socket.connections)>0:
+                socket.connections[0]._remove()
 
         # Remove all plugs connections.
         for plug in self.plugs.values():
-            for connection in plug.connections:
-                connection._remove()
+            while len(plug.connections)>0:
+                plug.connections[0]._remove()
 
         # Remove node.
         scene = self.scene()
