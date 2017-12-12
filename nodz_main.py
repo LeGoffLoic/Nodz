@@ -1,6 +1,4 @@
 import os
-import re
-import json
 import six
 
 from Qt import QtGui, QtCore, QtWidgets
@@ -710,8 +708,6 @@ class Nodz(QtWidgets.QGraphicsView):
             node.attrs[index] = newName
 
         if isinstance(newIndex, int):
-            attrName = node.attrs[index]
-
             utils._swapListIndices(node.attrs, index, newIndex)
 
             # Refresh connections.
