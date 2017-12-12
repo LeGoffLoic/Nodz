@@ -1,5 +1,13 @@
 import os
+import json
 import six
+
+try:
+    import networkx as nx
+    from networkx.readwrite import json_graph
+except ImportError:
+    nx = None
+    json_graph = None
 
 from Qt import QtGui, QtCore, QtWidgets
 import nodz_utils as utils
@@ -802,6 +810,97 @@ class Nodz(QtWidgets.QGraphicsView):
         # Emit signal.
         self.signal_GraphSaved.emit()
 
+    def saveGraphAsNetworkX(self, filePath='path'):
+        if nx is None:
+            raise Exception("Failed to import networkx")
+        graph = nx.MultiDiGraph()
+        for name, node in self.scene().nodes.items():
+            attributes = []
+            for attr in node.attrs:
+                attrData = node.attrsData[attr]
+
+                # serialize dataType if needed.
+                if isinstance(attrData['dataType'], type):
+                    attrData['dataType'] = str(attrData['dataType'])
+
+                attributes.append(attrData)
+
+            graph.add_node(name,
+                           preset=node.nodePreset,
+                           position=(node.pos().x(), node.pos().y()),
+                           alternate=node.alternate,
+                           attributes=attributes)
+
+        edges = self.evaluateGraph(tuples=True)
+        for edge in edges:
+            (plugNode, plugAttr), (socketNode, socketAttr) = edge
+            graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+
+        serialized = json_graph.node_link_data(graph)
+        jsonized = json.dumps(serialized, indent=4)
+        try:
+            fh = open(filePath, 'w')
+            fh.write(jsonized)
+            fh.close()
+        except Exception as e:
+            print("Failed to write JSON data to file '%s': %s" % (filePath, e))
+            raise
+
+    def loadGraphAsNetworkx(self, filePath):
+        try:
+            fh = open(filePath, 'r')
+            data = json.load(fh)
+            fh.close()
+        except Exception as e:
+            print("Failed to open json file at '%s': %s" % (filePath, e))
+            raise e
+        graph = json_graph.node_link_graph(data)
+        print('nodes')
+        nodes = list(graph.nodes(data=True))
+        for nodename, nodedata in nodes:
+            print(nodename)
+            p = nodedata['position']
+            point = QtCore.QPointF(p[0], p[1])
+            node = self.createNode(name=nodename,
+                                   preset=nodedata['preset'],
+                                   position=point,
+                                   alternate=nodedata['alternate'])
+
+            for index, attrData in enumerate(nodedata['attributes']):
+
+                name = attrData['name']
+                plug = attrData['plug']
+                socket = attrData['socket']
+                preset = attrData['preset']
+                dataType = attrData['dataType']
+
+                # un-serialize data type if needed
+                if (isinstance(dataType, six.text_type) and dataType.find('<') == 0):
+                    dataType = eval(str(dataType.split('\'')[1]))
+
+                self.createAttribute(node=node,
+                                     name=name,
+                                     index=index,
+                                     preset=preset,
+                                     plug=plug,
+                                     socket=socket,
+                                     dataType=dataType)
+
+        # Apply connections data.
+        edges = graph.edges(data=True)
+        print(edges)
+        for source, target, data in edges:
+            print(source)
+
+            self.createConnection(source, data['plug'],
+                                  target, data['socket'])
+
+        self.scene().update()
+
+        # Emit signal.
+        self.signal_GraphLoaded.emit()
+
+
     def loadGraph(self, filePath='path'):
         """
         Get all the stored info from the .json file at the given location
@@ -914,7 +1013,7 @@ class Nodz(QtWidgets.QGraphicsView):
 
         return connection
 
-    def evaluateGraph(self):
+    def evaluateGraph(self, tuples=False):
         """
         Create a list of connection tuples.
         [("sourceNode.attribute", "TargetNode.attribute"), ...]
@@ -925,10 +1024,20 @@ class Nodz(QtWidgets.QGraphicsView):
         data = list()
 
         for item in scene.items():
-            if isinstance(item, ConnectionItem):
-                connection = item
+            if not isinstance(item, ConnectionItem):
+                continue
 
-                data.append(connection._outputConnectionData())
+            connection = item
+
+            cdata = connection._outputConnectionData()
+
+            if tuples:
+                pair = cdata
+            else:
+                plugData, socketData = cdata
+                pair = ("{0}.{1}".format(*plugData),
+                        "{0}.{1}".format(*socketData))
+            data.append(pair)
 
         # Emit Signal
         self.signal_GraphEvaluated.emit()
@@ -1947,8 +2056,8 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         .
 
         """
-        return ("{0}.{1}".format(self.plugNode, self.plugAttr),
-                "{0}.{1}".format(self.socketNode, self.socketAttr))
+        return ((self.plugNode, self.plugAttr),
+                (self.socketNode, self.socketAttr))
 
     def mousePressEvent(self, event):
         """
