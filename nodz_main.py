@@ -24,6 +24,7 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_NodeDeleted = QtCore.Signal(object)
     signal_NodeEdited = QtCore.Signal(object, object)
     signal_NodeSelected = QtCore.Signal(object)
+    signal_NodeMoved = QtCore.Signal(str, object)
 
     signal_AttrCreated = QtCore.Signal(object, object)
     signal_AttrDeleted = QtCore.Signal(object, object)
@@ -462,6 +463,8 @@ class Nodz(QtWidgets.QGraphicsView):
         sceneHeight = config['scene_height']
         scene.setSceneRect(0, 0, sceneWidth, sceneHeight)
         self.setScene(scene)
+        # Connect scene node moved signal
+        scene.signal_NodeMoved.connect(self.signal_NodeMoved)
 
         # Tablet zoom.
         self.previousMouseOffset = 0
@@ -960,6 +963,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
     The scene displaying all the nodes.
 
     """
+    signal_NodeMoved = QtCore.Signal(str, object)
 
     def __init__(self, parent):
         """
@@ -1442,6 +1446,9 @@ class NodeItem(QtWidgets.QGraphicsItem):
             else:
                 self.scene().updateScene()
                 super(NodeItem, self).mouseMoveEvent(event)
+            # Emit signal.
+            self.scene().signal_NodeMoved.emit(self.name, self.pos())
+
 
     def hoverLeaveEvent(self, event):
         """
