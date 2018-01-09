@@ -1446,9 +1446,15 @@ class NodeItem(QtWidgets.QGraphicsItem):
             else:
                 self.scene().updateScene()
                 super(NodeItem, self).mouseMoveEvent(event)
-            # Emit signal.
-            self.scene().signal_NodeMoved.emit(self.name, self.pos())
 
+    def mouseReleaseEvent(self, event):
+        """
+        .
+
+        """
+        # Emit node moved signal.
+        self.scene().signal_NodeMoved.emit(self.name, self.pos())
+        super(NodeItem, self).mouseReleaseEvent(event)
 
     def hoverLeaveEvent(self, event):
         """
