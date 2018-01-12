@@ -1397,14 +1397,11 @@ class NodeItem(QtWidgets.QGraphicsItem):
                         # Set non-connectable attributes color.
                         painter.setPen(utils._convertDataToColor(config['non_connectable_color']))
 
-
-
-            painter.drawText(QtCore.QRect(0.5 + 10,
-                                          self.baseHeight-self.radius+(self.attrHeight/4)+offset,
-                                          self.baseWidth - 20,
-                                          self.attrHeight),
-                                            0.5, name)
-
+            textRect = QtCore.QRect(rect.left() + self.radius,
+                                     rect.top(),
+                                     rect.width() - 2*self.radius,
+                                     rect.height())
+            painter.drawText(textRect, QtCore.Qt.AlignVCenter, name)
 
             offset += self.attrHeight
 
