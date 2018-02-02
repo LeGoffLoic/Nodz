@@ -36,7 +36,7 @@ def on_nodeSelected(nodesName):
 
 @QtCore.Slot(str, object)
 def on_nodeMoved(nodeName, nodePos):
-    print 'node {0} moved to {1}'.format(nodeName, nodePos)
+    print('node {0} moved to {1}'.format(nodeName, nodePos))
 
 # Attrs
 @QtCore.Slot(str, int)
