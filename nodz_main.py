@@ -31,6 +31,7 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_NodeDeleted = QtCore.Signal(object)
     signal_NodeEdited = QtCore.Signal(object, object)
     signal_NodeSelected = QtCore.Signal(object)
+    signal_NodeMoved = QtCore.Signal(str, object)
 
     signal_AttrCreated = QtCore.Signal(object, object)
     signal_AttrDeleted = QtCore.Signal(object, object)
@@ -469,6 +470,8 @@ class Nodz(QtWidgets.QGraphicsView):
         sceneHeight = config['scene_height']
         scene.setSceneRect(0, 0, sceneWidth, sceneHeight)
         self.setScene(scene)
+        # Connect scene node moved signal
+        scene.signal_NodeMoved.connect(self.signal_NodeMoved)
 
         # Tablet zoom.
         self.previousMouseOffset = 0
@@ -1066,6 +1069,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
     The scene displaying all the nodes.
 
     """
+    signal_NodeMoved = QtCore.Signal(str, object)
 
     def __init__(self, parent):
         """
@@ -1499,14 +1503,11 @@ class NodeItem(QtWidgets.QGraphicsItem):
                         # Set non-connectable attributes color.
                         painter.setPen(utils._convertDataToColor(config['non_connectable_color']))
 
-
-
-            painter.drawText(QtCore.QRect(0.5 + 10,
-                                          self.baseHeight-self.radius+(self.attrHeight/4)+offset,
-                                          self.baseWidth - 20,
-                                          self.attrHeight),
-                                            0.5, name)
-
+            textRect = QtCore.QRect(rect.left() + self.radius,
+                                     rect.top(),
+                                     rect.width() - 2*self.radius,
+                                     rect.height())
+            painter.drawText(textRect, QtCore.Qt.AlignVCenter, name)
 
             offset += self.attrHeight
 
@@ -1548,6 +1549,15 @@ class NodeItem(QtWidgets.QGraphicsItem):
             else:
                 self.scene().updateScene()
                 super(NodeItem, self).mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        """
+        .
+
+        """
+        # Emit node moved signal.
+        self.scene().signal_NodeMoved.emit(self.name, self.pos())
+        super(NodeItem, self).mouseReleaseEvent(event)
 
     def hoverLeaveEvent(self, event):
         """

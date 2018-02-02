@@ -34,6 +34,10 @@ def on_nodeEdited(nodeName, newName):
 def on_nodeSelected(nodesName):
     print('node selected : ', nodesName)
 
+@QtCore.Slot(str, object)
+def on_nodeMoved(nodeName, nodePos):
+    print 'node {0} moved to {1}'.format(nodeName, nodePos)
+
 # Attrs
 @QtCore.Slot(str, int)
 def on_attrCreated(nodeName, attrId):
@@ -82,6 +86,7 @@ nodz.signal_NodeCreated.connect(on_nodeCreated)
 nodz.signal_NodeDeleted.connect(on_nodeDeleted)
 nodz.signal_NodeEdited.connect(on_nodeEdited)
 nodz.signal_NodeSelected.connect(on_nodeSelected)
+nodz.signal_NodeMoved.connect(on_nodeMoved)
 
 nodz.signal_AttrCreated.connect(on_attrCreated)
 nodz.signal_AttrDeleted.connect(on_attrDeleted)
