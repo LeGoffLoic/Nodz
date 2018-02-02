@@ -10,7 +10,7 @@ except ImportError:
     json_graph = None
 
 from Qt import QtGui, QtCore, QtWidgets
-import nodz_utils as utils
+from . import nodz_utils as utils
 
 
 
