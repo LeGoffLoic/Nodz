@@ -479,8 +479,11 @@ class Nodz(QtWidgets.QGraphicsView):
         self.scene().selectionChanged.connect(self._returnSelection)
 
 
+    def createNxNode(self, name='default', preset='node_default', position=None, alternate=True, **extended_attributes):
+        return self.createNode(name, preset, position, alternate, extended_attributes)
+
     # NODES
-    def createNode(self, name='default', preset='node_default', position=None, alternate=True):
+    def createNode(self, name='default', preset='node_default', position=None, alternate=True, extended_attributes=None):
         """
         Create a new node with a given name, position and color.
 
@@ -510,7 +513,7 @@ class Nodz(QtWidgets.QGraphicsView):
             return
         else:
             nodeItem = NodeItem(name=name, alternate=alternate, preset=preset,
-                                config=self.config)
+                                config=self.config, extended_attributes=extended_attributes)
 
             # Store node in scene.
             self.scene().nodes[name] = nodeItem
@@ -810,7 +813,37 @@ class Nodz(QtWidgets.QGraphicsView):
         # Emit signal.
         self.signal_GraphSaved.emit()
 
-    def saveGraphAsNetworkX(self, filePath='path'):
+    def getNetworkxGraph(self):
+        if nx is None:
+            raise Exception("Failed to import networkx")
+        graph = nx.MultiDiGraph()
+        for name, node in self.scene().nodes.items():
+            attributes = []
+            for attr in node.attrs:
+                attrData = node.attrsData[attr]
+
+                # serialize dataType if needed.
+                if isinstance(attrData['dataType'], type):
+                    attrData['dataType'] = str(attrData['dataType'])
+
+                attributes.append(attrData)
+
+            graph.add_node(name,
+                           preset=node.nodePreset,
+                           position=(node.pos().x(), node.pos().y()),
+                           alternate=node.alternate,
+                           attributes=attributes, **node.extended_attributes)
+
+        edges = self.evaluateGraph(tuples=True)
+        for edge in edges:
+            (plugNode, plugAttr), (socketNode, socketAttr) = edge
+            graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+
+        return graph
+
+    def executeGraph(self, filePath='path'):
+        graph = self.getNetworkxGraph()
+        '''
         if nx is None:
             raise Exception("Failed to import networkx")
         graph = nx.MultiDiGraph()
@@ -835,6 +868,47 @@ class Nodz(QtWidgets.QGraphicsView):
         for edge in edges:
             (plugNode, plugAttr), (socketNode, socketAttr) = edge
             graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+        '''
+
+        commands = []
+        for node in graph.nodes:
+            if graph.predecessors(node):
+                continue
+            command = self.buildNodeCommand(node)
+            commands.append(command)
+
+
+    def buildNodeCommand(self, node):
+        return 'aasdfa'
+
+    def saveGraphAsNetworkX(self, filePath='path'):
+        graph = self.getNetworkxGraph()
+        '''
+        if nx is None:
+            raise Exception("Failed to import networkx")
+        graph = nx.MultiDiGraph()
+        for name, node in self.scene().nodes.items():
+            attributes = []
+            for attr in node.attrs:
+                attrData = node.attrsData[attr]
+
+                # serialize dataType if needed.
+                if isinstance(attrData['dataType'], type):
+                    attrData['dataType'] = str(attrData['dataType'])
+
+                attributes.append(attrData)
+
+            graph.add_node(name,
+                           preset=node.nodePreset,
+                           position=(node.pos().x(), node.pos().y()),
+                           alternate=node.alternate,
+                           attributes=attributes)
+
+        edges = self.evaluateGraph(tuples=True)
+        for edge in edges:
+            (plugNode, plugAttr), (socketNode, socketAttr) = edge
+            graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+        '''
 
         serialized = json_graph.node_link_data(graph)
         jsonized = json.dumps(serialized, indent=4)
@@ -1151,7 +1225,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
     """
 
-    def __init__(self, name, alternate, preset, config):
+    def __init__(self, name, alternate, preset, config, extended_attributes=None):
         """
         Initialize the class.
 
@@ -1186,6 +1260,11 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
         self.plugs = dict()
         self.sockets = dict()
+
+        # Extended attributes
+        self.extended_attributes = {}
+        if extended_attributes:
+            self.extended_attributes = extended_attributes
 
         # Methods.
         self._createStyle(config)
