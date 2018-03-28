@@ -9,7 +9,10 @@ except ImportError:
     nx = None
     json_graph = None
 
-from Qt import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets
+from PyQt5 import QtCore
+from PyQt5 import QtGui
 from . import nodz_utils as utils
 
 
@@ -27,28 +30,28 @@ class Nodz(QtWidgets.QGraphicsView):
 
     """
 
-    signal_NodeCreated = QtCore.Signal(object)
-    signal_NodeDeleted = QtCore.Signal(object)
-    signal_NodeEdited = QtCore.Signal(object, object)
-    signal_NodeSelected = QtCore.Signal(object)
-    signal_NodeMoved = QtCore.Signal(str, object)
+    signal_NodeCreated = QtCore.pyqtSignal(object)
+    signal_NodeDeleted = QtCore.pyqtSignal(object)
+    signal_NodeEdited = QtCore.pyqtSignal(object, object)
+    signal_NodeSelected = QtCore.pyqtSignal(object)
+    signal_NodeMoved = QtCore.pyqtSignal(str, object)
 
-    signal_AttrCreated = QtCore.Signal(object, object)
-    signal_AttrDeleted = QtCore.Signal(object, object)
-    signal_AttrEdited = QtCore.Signal(object, object, object)
+    signal_AttrCreated = QtCore.pyqtSignal(object, object)
+    signal_AttrDeleted = QtCore.pyqtSignal(object, object)
+    signal_AttrEdited = QtCore.pyqtSignal(object, object, object)
 
-    signal_PlugConnected = QtCore.Signal(object, object, object, object)
-    signal_PlugDisconnected = QtCore.Signal(object, object, object, object)
-    signal_SocketConnected = QtCore.Signal(object, object, object, object)
-    signal_SocketDisconnected = QtCore.Signal(object, object, object, object)
+    signal_PlugConnected = QtCore.pyqtSignal(object, object, object, object)
+    signal_PlugDisconnected = QtCore.pyqtSignal(object, object, object, object)
+    signal_SocketConnected = QtCore.pyqtSignal(object, object, object, object)
+    signal_SocketDisconnected = QtCore.pyqtSignal(object, object, object, object)
 
-    signal_GraphSaved = QtCore.Signal()
-    signal_GraphLoaded = QtCore.Signal()
-    signal_GraphCleared = QtCore.Signal()
-    signal_GraphEvaluated = QtCore.Signal()
+    signal_GraphSaved = QtCore.pyqtSignal()
+    signal_GraphLoaded = QtCore.pyqtSignal()
+    signal_GraphCleared = QtCore.pyqtSignal()
+    signal_GraphEvaluated = QtCore.pyqtSignal()
 
-    signal_KeyPressed = QtCore.Signal(object)
-    signal_Dropped = QtCore.Signal()
+    signal_KeyPressed = QtCore.pyqtSignal(object)
+    signal_Dropped = QtCore.pyqtSignal(object)
 
     def __init__(self, parent, configPath=defaultConfigPath):
         """
@@ -1143,7 +1146,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
     The scene displaying all the nodes.
 
     """
-    signal_NodeMoved = QtCore.Signal(str, object)
+    signal_NodeMoved = QtCore.pyqtSignal(str, object)
 
     def __init__(self, parent):
         """
