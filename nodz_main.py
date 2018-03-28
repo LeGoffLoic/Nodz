@@ -1154,6 +1154,8 @@ class NodeScene(QtWidgets.QGraphicsScene):
 
         """
         super(NodeScene, self).__init__(parent)
+        #self.setAcceptDrops(True)
+        print("SEL PAR: %s  ::  %s" % (parent, self.parent(),))
 
         # General.
         self.gridSize = parent.config['grid_size']
@@ -1183,7 +1185,11 @@ class NodeScene(QtWidgets.QGraphicsScene):
 
         """
         # Emit signal.
-        self.signal_Dropped.emit(event.scenePos())
+        self.parent().signal_Dropped.emit(event.scenePos())
+        print("DROP EVENT")
+        print(event.mimeData().text())
+        print(event.scenePos())
+        print("")
 
         event.accept()
 
