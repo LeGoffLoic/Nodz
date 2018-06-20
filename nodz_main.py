@@ -291,7 +291,7 @@ class Nodz(QtWidgets.QGraphicsView):
         if event.key() not in self.pressedKeys:
             self.pressedKeys.append(event.key())
 
-        if event.key() == QtCore.Qt.Key_Delete:
+        if event.key() in (QtCore.Qt.Key_Delete, QtCore.Qt.Key_Backspace):
             self._deleteSelectedNodes()
 
         if event.key() == QtCore.Qt.Key_F:
