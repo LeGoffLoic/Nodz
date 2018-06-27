@@ -593,7 +593,7 @@ class Nodz(QtWidgets.QGraphicsView):
 
 
     # ATTRS
-    def createAttribute(self, node, name='default', index=-1, preset='attr_default', plug=True, socket=True, dataType=None):
+    def createAttribute(self, node, name='default', index=-1, preset='attr_default', plug=True, socket=True, dataType=None, plugMaxConnections=-1, socketMaxConnections=1):
         """
         Create a new attribute with a given name.
 
@@ -623,6 +623,12 @@ class Nodz(QtWidgets.QGraphicsView):
                          in order to highlight attributes of the same
                          type while performing a connection.
 
+        :type  plugMaxConnections: int.
+        :param plugMaxConnections: The maximum connections that the plug can have (-1 for infinite).
+
+        :type  socketMaxConnections: int.
+        :param socketMaxConnections: The maximum connections that the socket can have (-1 for infinite).
+
         """
         if not node in self.scene().nodes.values():
             print 'Node object does not exist !'
@@ -634,7 +640,7 @@ class Nodz(QtWidgets.QGraphicsView):
             print 'Attribute creation aborted !'
             return
 
-        node._createAttribute(name=name, index=index, preset=preset, plug=plug, socket=socket, dataType=dataType)
+        node._createAttribute(name=name, index=index, preset=preset, plug=plug, socket=socket, dataType=dataType, plugMaxConnections=plugMaxConnections, socketMaxConnections=socketMaxConnections)
 
         # Emit signal.
         self.signal_AttrCreated.emit(node.name, index)
@@ -850,6 +856,8 @@ class Nodz(QtWidgets.QGraphicsView):
                 socket = attrData['socket']
                 preset = attrData['preset']
                 dataType = attrData['dataType']
+                plugMaxConnections = attrData['plugMaxConnections']
+                socketMaxConnections = attrData['socketMaxConnections']
 
                 # un-serialize data type if needed
                 if (isinstance(dataType, unicode) and dataType.find('<') == 0):
@@ -861,7 +869,10 @@ class Nodz(QtWidgets.QGraphicsView):
                                      preset=preset,
                                      plug=plug,
                                      socket=socket,
-                                     dataType=dataType)
+                                     dataType=dataType,
+                                     plugMaxConnections=plugMaxConnections,
+                                     socketMaxConnections=socketMaxConnections
+                                     )
 
 
         # Apply connections data.
@@ -1164,7 +1175,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
         self._attrPen = QtGui.QPen()
         self._attrPen.setStyle(QtCore.Qt.SolidLine)
 
-    def _createAttribute(self, name, index, preset, plug, socket, dataType):
+    def _createAttribute(self, name, index, preset, plug, socket, dataType, plugMaxConnections, socketMaxConnections):
         """
         Create an attribute by expanding the node, adding a label and
         connection items.
@@ -1206,7 +1217,8 @@ class NodeItem(QtWidgets.QGraphicsItem):
                                 attribute=name,
                                 index=self.attrCount,
                                 preset=preset,
-                                dataType=dataType)
+                                dataType=dataType,
+                                maxConnections=plugMaxConnections)
 
             self.plugs[name] = plugInst
 
@@ -1216,7 +1228,8 @@ class NodeItem(QtWidgets.QGraphicsItem):
                                     attribute=name,
                                     index=self.attrCount,
                                     preset=preset,
-                                    dataType=dataType)
+                                    dataType=dataType,
+                                    maxConnections=socketMaxConnections)
 
             self.sockets[name] = socketInst
 
@@ -1233,7 +1246,10 @@ class NodeItem(QtWidgets.QGraphicsItem):
                                 'socket': socket,
                                 'plug': plug,
                                 'preset': preset,
-                                'dataType': dataType}
+                                'dataType': dataType,
+                                'plugMaxConnections': plugMaxConnections,
+                                'socketMaxConnections': socketMaxConnections
+                                }
 
         # Update node height.
         self.update()
@@ -1474,7 +1490,7 @@ class SlotItem(QtWidgets.QGraphicsItem):
 
     """
 
-    def __init__(self, parent, attribute, preset, index, dataType):
+    def __init__(self, parent, attribute, preset, index, dataType, maxConnections):
         """
         Initialize the class.
 
@@ -1517,6 +1533,33 @@ class SlotItem(QtWidgets.QGraphicsItem):
         self.connected_slots = list()
         self.newConnection = None
         self.connections = list()
+        self.maxConnections = maxConnections
+
+    def accepts(self, slot_item):
+        """
+        Only accepts plug items that belong to other nodes, and only if the max connections count is not reached yet.
+
+        """
+        # no plug on plug or socket on socket
+        hasPlugItem = isinstance(self, PlugItem) or isinstance(slot_item, PlugItem)
+        hasSocketItem = isinstance(self, SocketItem) or isinstance(slot_item, SocketItem)
+        if not (hasPlugItem and hasSocketItem):
+            return False
+
+        # no self connection
+        if self.parentItem() == slot_item.parentItem():
+            return False
+
+        #no more than maxConnections
+        if self.maxConnections>0 and len(self.connected_slots) >= self.maxConnections:
+            return False
+
+        #no connection with different types
+        if slot_item.dataType != self.dataType:
+            return False
+
+        #otherwize, all fine.
+        return True
 
     def mousePressEvent(self, event):
         """
@@ -1655,7 +1698,7 @@ class PlugItem(SlotItem):
 
     """
 
-    def __init__(self, parent, attribute, index, preset, dataType):
+    def __init__(self, parent, attribute, index, preset, dataType, maxConnections):
         """
         Initialize the class.
 
@@ -1675,7 +1718,7 @@ class PlugItem(SlotItem):
         :type  dataType: Type.
 
         """
-        super(PlugItem, self).__init__(parent, attribute, preset, index, dataType)
+        super(PlugItem, self).__init__(parent, attribute, preset, index, dataType, maxConnections)
 
         # Storage.
         self.attributte = attribute
@@ -1713,28 +1756,15 @@ class PlugItem(SlotItem):
         rect = QtCore.QRectF(QtCore.QRect(x, y, width, height))
         return rect
 
-    def accepts(self, socket_item):
-        """
-        Only accepts socket items that belong to other nodes.
-
-        """
-        if isinstance(socket_item, SocketItem):
-            if self.parentItem() != socket_item.parentItem():
-                if socket_item.dataType == self.dataType:
-                    if socket_item in self.connected_slots:
-                        return False
-                    else:
-                        return True
-            else:
-                return False
-        else:
-            return False
-
     def connect(self, socket_item, connection):
         """
         Connect to the given socket_item.
 
         """
+        if self.maxConnections>0 and len(self.connected_slots) >= self.maxConnections:
+            # Already connected.
+            self.connections[self.maxConnections-1]._remove()
+
         # Populate connection.
         connection.socketItem = socket_item
         connection.plugNode = self.parentItem().name
@@ -1776,7 +1806,7 @@ class SocketItem(SlotItem):
 
     """
 
-    def __init__(self, parent, attribute, index, preset, dataType):
+    def __init__(self, parent, attribute, index, preset, dataType, maxConnections):
         """
         Initialize the socket.
 
@@ -1796,7 +1826,7 @@ class SocketItem(SlotItem):
         :type  dataType: Type.
 
         """
-        super(SocketItem, self).__init__(parent, attribute, preset, index, dataType)
+        super(SocketItem, self).__init__(parent, attribute, preset, index, dataType, maxConnections)
 
         # Storage.
         self.attributte = attribute
@@ -1834,33 +1864,14 @@ class SocketItem(SlotItem):
         rect = QtCore.QRectF(QtCore.QRect(x, y, width, height))
         return rect
 
-    def accepts(self, plug_item):
-        """
-        Only accepts plug items that belong to other nodes.
-
-        """
-        if isinstance(plug_item, PlugItem):
-            if (self.parentItem() != plug_item.parentItem() and
-                len(self.connected_slots) <= 1):
-                if plug_item.dataType == self.dataType:
-                    if plug_item in self.connected_slots:
-                        return False
-                    else:
-                        return True
-            else:
-                return False
-        else:
-            return False
-
     def connect(self, plug_item, connection):
         """
         Connect to the given plug item.
 
         """
-        if len(self.connected_slots) > 0:
+        if self.maxConnections>0 and len(self.connected_slots) >= self.maxConnections:
             # Already connected.
-            self.connections[0]._remove()
-            self.connected_slots = list()
+            self.connections[self.maxConnections-1]._remove()
 
         # Populate connection.
         connection.plugItem = plug_item
