@@ -1,0 +1,4 @@
+RELEASE NOTES
+
+v1.1.0 - 28/06/20180:
+    Catchup, from now on, I will try to mark releases
