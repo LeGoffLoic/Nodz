@@ -80,7 +80,7 @@ def editNode(node, newName)
 ```
 Attributes
 ```python
-def createAttribute(node, name, index, preset, plug, socket, dataType)
+def createAttribute(node, name, index, preset, plug, socket, dataType, plugMaxConnections, socketMaxConnections)
 def deleteAttribute(node, index)
 def editAttribute( node, index, newName, newIndex)
 ```
