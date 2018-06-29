@@ -1,9 +1,19 @@
 import os
-import re
 import json
+import six
 
-from Qt import QtGui, QtCore, QtWidgets
-import nodz_utils as utils
+try:
+    import networkx as nx
+    from networkx.readwrite import json_graph
+except ImportError:
+    nx = None
+    json_graph = None
+
+from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from . import nodz_utils as utils
 
 
 
@@ -20,28 +30,28 @@ class Nodz(QtWidgets.QGraphicsView):
 
     """
 
-    signal_NodeCreated = QtCore.Signal(object)
-    signal_NodeDeleted = QtCore.Signal(object)
-    signal_NodeEdited = QtCore.Signal(object, object)
-    signal_NodeSelected = QtCore.Signal(object)
-    signal_NodeMoved = QtCore.Signal(str, object)
+    signal_NodeCreated = QtCore.pyqtSignal(object)
+    signal_NodeDeleted = QtCore.pyqtSignal(object)
+    signal_NodeEdited = QtCore.pyqtSignal(object, object)
+    signal_NodeSelected = QtCore.pyqtSignal(object)
+    signal_NodeMoved = QtCore.pyqtSignal(str, object)
 
-    signal_AttrCreated = QtCore.Signal(object, object)
-    signal_AttrDeleted = QtCore.Signal(object, object)
-    signal_AttrEdited = QtCore.Signal(object, object, object)
+    signal_AttrCreated = QtCore.pyqtSignal(object, object)
+    signal_AttrDeleted = QtCore.pyqtSignal(object, object)
+    signal_AttrEdited = QtCore.pyqtSignal(object, object, object)
 
-    signal_PlugConnected = QtCore.Signal(object, object, object, object)
-    signal_PlugDisconnected = QtCore.Signal(object, object, object, object)
-    signal_SocketConnected = QtCore.Signal(object, object, object, object)
-    signal_SocketDisconnected = QtCore.Signal(object, object, object, object)
+    signal_PlugConnected = QtCore.pyqtSignal(object, object, object, object)
+    signal_PlugDisconnected = QtCore.pyqtSignal(object, object, object, object)
+    signal_SocketConnected = QtCore.pyqtSignal(object, object, object, object)
+    signal_SocketDisconnected = QtCore.pyqtSignal(object, object, object, object)
 
-    signal_GraphSaved = QtCore.Signal()
-    signal_GraphLoaded = QtCore.Signal()
-    signal_GraphCleared = QtCore.Signal()
-    signal_GraphEvaluated = QtCore.Signal()
+    signal_GraphSaved = QtCore.pyqtSignal()
+    signal_GraphLoaded = QtCore.pyqtSignal()
+    signal_GraphCleared = QtCore.pyqtSignal()
+    signal_GraphEvaluated = QtCore.pyqtSignal()
 
-    signal_KeyPressed = QtCore.Signal(object)
-    signal_Dropped = QtCore.Signal()
+    signal_KeyPressed = QtCore.pyqtSignal(object)
+    signal_Dropped = QtCore.pyqtSignal(object)
 
     def __init__(self, parent, configPath=defaultConfigPath):
         """
@@ -475,8 +485,11 @@ class Nodz(QtWidgets.QGraphicsView):
         self.scene().selectionChanged.connect(self._returnSelection)
 
 
+    def createNxNode(self, name='default', preset='node_default', position=None, alternate=True, **extended_attributes):
+        return self.createNode(name, preset, position, alternate, extended_attributes)
+
     # NODES
-    def createNode(self, name='default', preset='node_default', position=None, alternate=True):
+    def createNode(self, name='default', preset='node_default', position=None, alternate=True, extended_attributes=None):
         """
         Create a new node with a given name, position and color.
 
@@ -501,12 +514,12 @@ class Nodz(QtWidgets.QGraphicsView):
         """
         # Check for name clashes
         if name in self.scene().nodes.keys():
-            print 'A node with the same name already exists : {0}'.format(name)
-            print 'Node creation aborted !'
+            print('A node with the same name already exists : {0}'.format(name))
+            print('Node creation aborted !')
             return
         else:
             nodeItem = NodeItem(name=name, alternate=alternate, preset=preset,
-                                config=self.config)
+                                config=self.config, extended_attributes=extended_attributes)
 
             # Store node in scene.
             self.scene().nodes[name] = nodeItem
@@ -533,8 +546,8 @@ class Nodz(QtWidgets.QGraphicsView):
 
         """
         if not node in self.scene().nodes.values():
-            print 'Node object does not exist !'
-            print 'Node deletion aborted !'
+            print('Node object does not exist !')
+            print('Node deletion aborted !')
             return
 
         if node in self.scene().nodes.values():
@@ -556,8 +569,8 @@ class Nodz(QtWidgets.QGraphicsView):
 
         """
         if not node in self.scene().nodes.values():
-            print 'Node object does not exist !'
-            print 'Node edition aborted !'
+            print('Node object does not exist !')
+            print('Node edition aborted !')
             return
 
         oldName = node.name
@@ -565,8 +578,8 @@ class Nodz(QtWidgets.QGraphicsView):
         if newName != None:
             # Check for name clashes
             if newName in self.scene().nodes.keys():
-                print 'A node with the same name already exists : {0}'.format(newName)
-                print 'Node edition aborted !'
+                print('A node with the same name already exists : {0}'.format(newName))
+                print('Node edition aborted !')
                 return
             else:
                 node.name = newName
@@ -625,13 +638,13 @@ class Nodz(QtWidgets.QGraphicsView):
 
         """
         if not node in self.scene().nodes.values():
-            print 'Node object does not exist !'
-            print 'Attribute creation aborted !'
+            print('Node object does not exist !')
+            print('Attribute creation aborted !')
             return
 
         if name in node.attrs:
-            print 'An attribute with the same name already exists : {0}'.format(name)
-            print 'Attribute creation aborted !'
+            print('An attribute with the same name already exists : {0}'.format(name))
+            print('Attribute creation aborted !')
             return
 
         node._createAttribute(name=name, index=index, preset=preset, plug=plug, socket=socket, dataType=dataType)
@@ -651,8 +664,8 @@ class Nodz(QtWidgets.QGraphicsView):
 
         """
         if not node in self.scene().nodes.values():
-            print 'Node object does not exist !'
-            print 'Attribute deletion aborted !'
+            print('Node object does not exist !')
+            print('Attribute deletion aborted !')
             return
 
         node._deleteAttribute(index)
@@ -678,14 +691,14 @@ class Nodz(QtWidgets.QGraphicsView):
 
         """
         if not node in self.scene().nodes.values():
-            print 'Node object does not exist !'
-            print 'Attribute creation aborted !'
+            print('Node object does not exist !')
+            print('Attribute creation aborted !')
             return
 
         if newName != None:
             if newName in node.attrs:
-                print 'An attribute with the same name already exists : {0}'.format(newName)
-                print 'Attribute edition aborted !'
+                print('An attribute with the same name already exists : {0}'.format(newName))
+                print('Attribute edition aborted !')
                 return
             else:
                 oldName = node.attrs[index]
@@ -712,8 +725,6 @@ class Nodz(QtWidgets.QGraphicsView):
             node.attrs[index] = newName
 
         if isinstance(newIndex, int):
-            attrName = node.attrs[index]
-
             utils._swapListIndices(node.attrs, index, newIndex)
 
             # Refresh connections.
@@ -801,12 +812,174 @@ class Nodz(QtWidgets.QGraphicsView):
         try:
             utils._saveData(filePath=filePath, data=data)
         except:
-            print 'Invalid path : {0}'.format(filePath)
-            print 'Save aborted !'
+            print('Invalid path : {0}'.format(filePath))
+            print('Save aborted !')
             return False
 
         # Emit signal.
         self.signal_GraphSaved.emit()
+
+    def getNetworkxGraph(self):
+        if nx is None:
+            raise Exception("Failed to import networkx")
+        graph = nx.MultiDiGraph()
+        for name, node in self.scene().nodes.items():
+            attributes = []
+            for attr in node.attrs:
+                attrData = node.attrsData[attr]
+
+                # serialize dataType if needed.
+                if isinstance(attrData['dataType'], type):
+                    attrData['dataType'] = str(attrData['dataType'])
+
+                attributes.append(attrData)
+
+            graph.add_node(name,
+                           preset=node.nodePreset,
+                           position=(node.pos().x(), node.pos().y()),
+                           alternate=node.alternate,
+                           attributes=attributes, **node.extended_attributes)
+
+        edges = self.evaluateGraph(tuples=True)
+        for edge in edges:
+            (plugNode, plugAttr), (socketNode, socketAttr) = edge
+            graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+
+        return graph
+
+    def executeGraph(self, filePath='path'):
+        graph = self.getNetworkxGraph()
+        '''
+        if nx is None:
+            raise Exception("Failed to import networkx")
+        graph = nx.MultiDiGraph()
+        for name, node in self.scene().nodes.items():
+            attributes = []
+            for attr in node.attrs:
+                attrData = node.attrsData[attr]
+
+                # serialize dataType if needed.
+                if isinstance(attrData['dataType'], type):
+                    attrData['dataType'] = str(attrData['dataType'])
+
+                attributes.append(attrData)
+
+            graph.add_node(name,
+                           preset=node.nodePreset,
+                           position=(node.pos().x(), node.pos().y()),
+                           alternate=node.alternate,
+                           attributes=attributes)
+
+        edges = self.evaluateGraph(tuples=True)
+        for edge in edges:
+            (plugNode, plugAttr), (socketNode, socketAttr) = edge
+            graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+        '''
+
+        commands = []
+        for node in graph.nodes:
+            if graph.predecessors(node):
+                continue
+            command = self.buildNodeCommand(node)
+            commands.append(command)
+
+
+    def buildNodeCommand(self, node):
+        return 'aasdfa'
+
+    def saveGraphAsNetworkX(self, filePath='path'):
+        graph = self.getNetworkxGraph()
+        '''
+        if nx is None:
+            raise Exception("Failed to import networkx")
+        graph = nx.MultiDiGraph()
+        for name, node in self.scene().nodes.items():
+            attributes = []
+            for attr in node.attrs:
+                attrData = node.attrsData[attr]
+
+                # serialize dataType if needed.
+                if isinstance(attrData['dataType'], type):
+                    attrData['dataType'] = str(attrData['dataType'])
+
+                attributes.append(attrData)
+
+            graph.add_node(name,
+                           preset=node.nodePreset,
+                           position=(node.pos().x(), node.pos().y()),
+                           alternate=node.alternate,
+                           attributes=attributes)
+
+        edges = self.evaluateGraph(tuples=True)
+        for edge in edges:
+            (plugNode, plugAttr), (socketNode, socketAttr) = edge
+            graph.add_edge(plugNode, socketNode, plug=plugAttr, socket=socketAttr)
+        '''
+
+        serialized = json_graph.node_link_data(graph)
+        jsonized = json.dumps(serialized, indent=4)
+        try:
+            fh = open(filePath, 'w')
+            fh.write(jsonized)
+            fh.close()
+        except Exception as e:
+            print("Failed to write JSON data to file '%s': %s" % (filePath, e))
+            raise
+
+    def loadGraphAsNetworkx(self, filePath):
+        try:
+            fh = open(filePath, 'r')
+            data = json.load(fh)
+            fh.close()
+        except Exception as e:
+            print("Failed to open json file at '%s': %s" % (filePath, e))
+            raise e
+        graph = json_graph.node_link_graph(data)
+        print('nodes')
+        nodes = list(graph.nodes(data=True))
+        for nodename, nodedata in nodes:
+            print(nodename)
+            p = nodedata['position']
+            point = QtCore.QPointF(p[0], p[1])
+            node = self.createNode(name=nodename,
+                                   preset=nodedata['preset'],
+                                   position=point,
+                                   alternate=nodedata['alternate'])
+
+            for index, attrData in enumerate(nodedata['attributes']):
+
+                name = attrData['name']
+                plug = attrData['plug']
+                socket = attrData['socket']
+                preset = attrData['preset']
+                dataType = attrData['dataType']
+
+                # un-serialize data type if needed
+                if (isinstance(dataType, six.text_type) and dataType.find('<') == 0):
+                    dataType = eval(str(dataType.split('\'')[1]))
+
+                self.createAttribute(node=node,
+                                     name=name,
+                                     index=index,
+                                     preset=preset,
+                                     plug=plug,
+                                     socket=socket,
+                                     dataType=dataType)
+
+        # Apply connections data.
+        edges = graph.edges(data=True)
+        print(edges)
+        for source, target, data in edges:
+            print(source)
+
+            self.createConnection(source, data['plug'],
+                                  target, data['socket'])
+
+        self.scene().update()
+
+        # Emit signal.
+        self.signal_GraphLoaded.emit()
+
 
     def loadGraph(self, filePath='path'):
         """
@@ -821,8 +994,8 @@ class Nodz(QtWidgets.QGraphicsView):
         if os.path.exists(filePath):
             data = utils._loadData(filePath=filePath)
         else:
-            print 'Invalid path : {0}'.format(filePath)
-            print 'Load aborted !'
+            print('Invalid path : {0}'.format(filePath))
+            print('Load aborted !')
             return False
 
         # Apply nodes data.
@@ -852,7 +1025,7 @@ class Nodz(QtWidgets.QGraphicsView):
                 dataType = attrData['dataType']
 
                 # un-serialize data type if needed
-                if (isinstance(dataType, unicode) and dataType.find('<') == 0):
+                if (isinstance(dataType, six.text_type) and dataType.find('<') == 0):
                     dataType = eval(str(dataType.split('\'')[1]))
 
                 self.createAttribute(node=node,
@@ -920,7 +1093,7 @@ class Nodz(QtWidgets.QGraphicsView):
 
         return connection
 
-    def evaluateGraph(self):
+    def evaluateGraph(self, tuples=False):
         """
         Create a list of connection tuples.
         [("sourceNode.attribute", "TargetNode.attribute"), ...]
@@ -931,10 +1104,20 @@ class Nodz(QtWidgets.QGraphicsView):
         data = list()
 
         for item in scene.items():
-            if isinstance(item, ConnectionItem):
-                connection = item
+            if not isinstance(item, ConnectionItem):
+                continue
 
-                data.append(connection._outputConnectionData())
+            connection = item
+
+            cdata = connection._outputConnectionData()
+
+            if tuples:
+                pair = cdata
+            else:
+                plugData, socketData = cdata
+                pair = ("{0}.{1}".format(*plugData),
+                        "{0}.{1}".format(*socketData))
+            data.append(pair)
 
         # Emit Signal
         self.signal_GraphEvaluated.emit()
@@ -963,7 +1146,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
     The scene displaying all the nodes.
 
     """
-    signal_NodeMoved = QtCore.Signal(str, object)
+    signal_NodeMoved = QtCore.pyqtSignal(str, object)
 
     def __init__(self, parent):
         """
@@ -971,6 +1154,8 @@ class NodeScene(QtWidgets.QGraphicsScene):
 
         """
         super(NodeScene, self).__init__(parent)
+        #self.setAcceptDrops(True)
+        print("SEL PAR: %s  ::  %s" % (parent, self.parent(),))
 
         # General.
         self.gridSize = parent.config['grid_size']
@@ -1000,7 +1185,11 @@ class NodeScene(QtWidgets.QGraphicsScene):
 
         """
         # Emit signal.
-        self.signal_Dropped.emit(event.scenePos())
+        self.parent().signal_Dropped.emit(event.scenePos())
+        print("DROP EVENT")
+        print(event.mimeData().text())
+        print(event.scenePos())
+        print("")
 
         event.accept()
 
@@ -1049,7 +1238,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
     """
 
-    def __init__(self, name, alternate, preset, config):
+    def __init__(self, name, alternate, preset, config, extended_attributes=None):
         """
         Initialize the class.
 
@@ -1084,6 +1273,11 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
         self.plugs = dict()
         self.sockets = dict()
+
+        # Extended attributes
+        self.extended_attributes = {}
+        if extended_attributes:
+            self.extended_attributes = extended_attributes
 
         # Methods.
         self._createStyle(config)
@@ -1194,8 +1388,8 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
         """
         if name in self.attrs:
-            print 'An attribute with the same name already exists on this node : {0}'.format(name)
-            print 'Attribute creation aborted !'
+            print('An attribute with the same name already exists on this node : {0}'.format(name))
+            print('Attribute creation aborted !')
             return
 
         self.attrPreset = preset
@@ -1960,8 +2154,8 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         .
 
         """
-        return ("{0}.{1}".format(self.plugNode, self.plugAttr),
-                "{0}.{1}".format(self.socketNode, self.socketAttr))
+        return ((self.plugNode, self.plugAttr),
+                (self.socketNode, self.socketAttr))
 
     def mousePressEvent(self, event):
         """
