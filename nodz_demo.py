@@ -124,6 +124,12 @@ nodz.createAttribute(node=nodeA, name='Aattr3', index=-1, preset='attr_preset_2'
 nodz.createAttribute(node=nodeA, name='Aattr4', index=-1, preset='attr_preset_2',
                      plug=True, socket=True, dataType=str)
 
+nodz.createAttribute(node=nodeA, name='Aattr5', index=-1, preset='attr_preset_3',
+                     plug=True, socket=True, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
+
+nodz.createAttribute(node=nodeA, name='Aattr6', index=-1, preset='attr_preset_3',
+                     plug=True, socket=True, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
+
 
 
 # Node B
@@ -134,6 +140,12 @@ nodz.createAttribute(node=nodeB, name='Battr1', index=-1, preset='attr_preset_1'
 
 nodz.createAttribute(node=nodeB, name='Battr2', index=-1, preset='attr_preset_1',
                      plug=True, socket=False, dataType=int)
+
+nodz.createAttribute(node=nodeB, name='Battr3', index=-1, preset='attr_preset_2',
+                     plug=True, socket=False, dataType=int)
+
+nodz.createAttribute(node=nodeB, name='Battr4', index=-1, preset='attr_preset_3',
+                     plug=True, socket=False, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
 
 
 
