@@ -25,6 +25,7 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_NodeEdited = QtCore.Signal(object, object)
     signal_NodeSelected = QtCore.Signal(object)
     signal_NodeMoved = QtCore.Signal(str, object)
+    signal_NodeDoubleClicked = QtCore.Signal(str)
 
     signal_AttrCreated = QtCore.Signal(object, object)
     signal_AttrDeleted = QtCore.Signal(object, object)
@@ -1437,6 +1438,14 @@ class NodeItem(QtWidgets.QGraphicsItem):
         self.setZValue(2)
 
         super(NodeItem, self).mousePressEvent(event)
+
+    def mouseDoubleClickEvent(self, event):
+        """
+        Emit a signal.
+
+        """
+        super(NodeItem, self).mouseDoubleClickEvent(event)
+        self.scene().parent().signal_NodeDoubleClicked.emit(self.name)
 
     def mouseMoveEvent(self, event):
         """
