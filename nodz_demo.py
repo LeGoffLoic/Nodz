@@ -39,6 +39,10 @@ def on_nodeMoved(nodeName, nodePos):
     print 'node {0} moved to {1}'.format(nodeName, nodePos)
 
 @QtCore.Slot(str)
+def on_nodeRightClick(nodeName):
+    print 'right click on node : {0}'.format(nodeName)
+
+@QtCore.Slot(str)
 def on_nodeDoubleClick(nodeName):
     print 'double click on node : {0}'.format(nodeName)
 
@@ -91,6 +95,7 @@ nodz.signal_NodeDeleted.connect(on_nodeDeleted)
 nodz.signal_NodeEdited.connect(on_nodeEdited)
 nodz.signal_NodeSelected.connect(on_nodeSelected)
 nodz.signal_NodeMoved.connect(on_nodeMoved)
+nodz.signal_NodeRightClicked.connect(on_nodeRightClick)
 nodz.signal_NodeDoubleClicked.connect(on_nodeDoubleClick)
 
 nodz.signal_AttrCreated.connect(on_attrCreated)

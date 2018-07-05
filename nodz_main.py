@@ -25,6 +25,7 @@ class Nodz(QtWidgets.QGraphicsView):
     signal_NodeEdited = QtCore.Signal(object, object)
     signal_NodeSelected = QtCore.Signal(object)
     signal_NodeMoved = QtCore.Signal(str, object)
+    signal_NodeRightClicked = QtCore.Signal(str)
     signal_NodeDoubleClicked = QtCore.Signal(str)
 
     signal_AttrCreated = QtCore.Signal(object, object)
@@ -1475,7 +1476,10 @@ class NodeItem(QtWidgets.QGraphicsItem):
 
         """
         # Emit node moved signal.
-        self.scene().signal_NodeMoved.emit(self.name, self.pos())
+        if(event.button() == QtCore.Qt.MouseButton.LeftButton):
+            self.scene().signal_NodeMoved.emit(self.name, self.pos())
+        if(event.button() == QtCore.Qt.MouseButton.RightButton):
+            self.scene().parent().signal_NodeRightClicked.emit(self.name)
         super(NodeItem, self).mouseReleaseEvent(event)
 
     def hoverLeaveEvent(self, event):
