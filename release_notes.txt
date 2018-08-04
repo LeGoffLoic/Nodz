@@ -1,0 +1,11 @@
+RELEASE NOTES
+
+v1.3.0 - 02/07/2018:
+    + Feature : Added a signal when a node is double-clicked
+
+v1.2.0 - 02/07/2018:
+    + Feature : Now allowing to declare the maximum connections count of plugs and sockets
+
+v1.1.0 - 28/06/2018:
+    Catchup, from now on, I will try to mark releases
+

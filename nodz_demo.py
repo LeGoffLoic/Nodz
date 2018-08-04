@@ -1,5 +1,11 @@
-from Qt import QtCore
+from Qt import QtCore, QtWidgets
 import nodz_main
+
+try:
+    app = QtWidgets.QApplication([])
+except:
+    # I guess we're running somewhere that already has a QApp created
+    app = None
 
 nodz = nodz_main.Nodz(None)
 # nodz.loadConfig(filePath='')
@@ -28,6 +34,14 @@ def on_nodeEdited(nodeName, newName):
 def on_nodeSelected(nodesName):
     print 'node selected : ', nodesName
 
+@QtCore.Slot(str, object)
+def on_nodeMoved(nodeName, nodePos):
+    print 'node {0} moved to {1}'.format(nodeName, nodePos)
+
+@QtCore.Slot(str)
+def on_nodeDoubleClick(nodeName):
+    print 'double click on node : {0}'.format(nodeName)
+
 # Attrs
 @QtCore.Slot(str, int)
 def on_attrCreated(nodeName, attrId):
@@ -40,6 +54,15 @@ def on_attrDeleted(nodeName, attrId):
 @QtCore.Slot(str, int, int)
 def on_attrEdited(nodeName, oldId, newId):
     print 'attr Edited : {0} at old index : {1}, new index : {2}'.format(nodeName, oldId, newId)
+
+# Connections
+@QtCore.Slot(str, str, str, str)
+def on_connected(srcNodeName, srcPlugName, destNodeName, dstSocketName):
+    print 'connected src: "{0}" at "{1}" to dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName)
+
+@QtCore.Slot(str, str, str, str)
+def on_disconnected(srcNodeName, srcPlugName, destNodeName, dstSocketName):
+    print 'disconnected src: "{0}" at "{1}" from dst: "{2}" at "{3}"'.format(srcNodeName, srcPlugName, destNodeName, dstSocketName)
 
 # Graph
 @QtCore.Slot()
@@ -67,10 +90,17 @@ nodz.signal_NodeCreated.connect(on_nodeCreated)
 nodz.signal_NodeDeleted.connect(on_nodeDeleted)
 nodz.signal_NodeEdited.connect(on_nodeEdited)
 nodz.signal_NodeSelected.connect(on_nodeSelected)
+nodz.signal_NodeMoved.connect(on_nodeMoved)
+nodz.signal_NodeDoubleClicked.connect(on_nodeDoubleClick)
 
 nodz.signal_AttrCreated.connect(on_attrCreated)
 nodz.signal_AttrDeleted.connect(on_attrDeleted)
 nodz.signal_AttrEdited.connect(on_attrEdited)
+
+nodz.signal_PlugConnected.connect(on_connected)
+nodz.signal_SocketConnected.connect(on_connected)
+nodz.signal_PlugDisconnected.connect(on_disconnected)
+nodz.signal_SocketDisconnected.connect(on_disconnected)
 
 nodz.signal_GraphSaved.connect(on_graphSaved)
 nodz.signal_GraphLoaded.connect(on_graphLoaded)
@@ -91,13 +121,19 @@ nodz.createAttribute(node=nodeA, name='Aattr1', index=-1, preset='attr_preset_1'
                      plug=True, socket=False, dataType=str)
 
 nodz.createAttribute(node=nodeA, name='Aattr2', index=-1, preset='attr_preset_1',
-                     plug=True, socket=False, dataType=int)
+                     plug=False, socket=False, dataType=int)
 
 nodz.createAttribute(node=nodeA, name='Aattr3', index=-1, preset='attr_preset_2',
-                     plug=True, socket=False, dataType=int)
+                     plug=True, socket=True, dataType=int)
 
 nodz.createAttribute(node=nodeA, name='Aattr4', index=-1, preset='attr_preset_2',
-                     plug=True, socket=False, dataType=str)
+                     plug=True, socket=True, dataType=str)
+
+nodz.createAttribute(node=nodeA, name='Aattr5', index=-1, preset='attr_preset_3',
+                     plug=True, socket=True, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
+
+nodz.createAttribute(node=nodeA, name='Aattr6', index=-1, preset='attr_preset_3',
+                     plug=True, socket=True, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
 
 
 
@@ -109,6 +145,12 @@ nodz.createAttribute(node=nodeB, name='Battr1', index=-1, preset='attr_preset_1'
 
 nodz.createAttribute(node=nodeB, name='Battr2', index=-1, preset='attr_preset_1',
                      plug=True, socket=False, dataType=int)
+
+nodz.createAttribute(node=nodeB, name='Battr3', index=-1, preset='attr_preset_2',
+                     plug=True, socket=False, dataType=int)
+
+nodz.createAttribute(node=nodeB, name='Battr4', index=-1, preset='attr_preset_3',
+                     plug=True, socket=False, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
 
 
 
@@ -145,6 +187,9 @@ nodz.createAttribute(node=nodeC, name='Cattr8', index=-1, preset='attr_preset_3'
 # means the following code to alter nodes won't work but saving/loading/
 # clearing/evaluating will.
 
+# Connection creation
+nodz.createConnection('nodeB', 'Battr2', 'nodeA', 'Aattr3')
+nodz.createConnection('nodeB', 'Battr1', 'nodeA', 'Aattr4')
 
 # Attributes Edition
 nodz.editAttribute(node=nodeC, index=0, newName=None, newIndex=-1)
@@ -172,4 +217,6 @@ nodz.loadGraph(filePath='Enter your path')
 
 
 
-
+if app:
+    # command line stand alone test... run our own event loop
+    app.exec_()
