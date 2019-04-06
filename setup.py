@@ -35,7 +35,7 @@ setup(
     url="https://github.com/LeGoffLoic/Nodz",
     license="MIT",
     zip_safe=False,
-    data_files=["LICENSE"],
+    data_files=[("",["LICENSE.txt"])],
     packages=find_packages(),
     include_package_data=True,
     classifiers=classifiers
