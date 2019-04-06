@@ -35,7 +35,7 @@ setup(
     url="https://github.com/LeGoffLoic/Nodz",
     license="MIT",
     zip_safe=False,
-    package_data={'Nodz': ['default_config.json', 'pixmap.png']}
+    package_data={'Nodz': ['default_config.json', 'pixmap.png']},
     packages=find_packages(),
     include_package_data=True,
     classifiers=classifiers
