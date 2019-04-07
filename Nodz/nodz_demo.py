@@ -1,5 +1,6 @@
 from Qt import QtCore, QtWidgets
 import nodz_main
+import os
 
 try:
     app = QtWidgets.QApplication([])
@@ -152,6 +153,10 @@ nodz.createAttribute(node=nodeB, name='Battr3', index=-1, preset='attr_preset_2'
 nodz.createAttribute(node=nodeB, name='Battr4', index=-1, preset='attr_preset_3',
                      plug=True, socket=False, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
 
+nodz.createAttribute(node=nodeB, name='Battr5', index=-1, preset='attr_preset_3',
+                     plug=True, socket=False, dataType=int, plugMaxConnections=-1, socketMaxConnections=-1,
+                     connectionLabel="Sample", connectionIcon=os.path.join(os.path.dirname(__file__),'pixmap.png'))
+
 
 
 # Node C
@@ -190,6 +195,8 @@ nodz.createAttribute(node=nodeC, name='Cattr8', index=-1, preset='attr_preset_3'
 # Connection creation
 nodz.createConnection('nodeB', 'Battr2', 'nodeA', 'Aattr3')
 nodz.createConnection('nodeB', 'Battr1', 'nodeA', 'Aattr4')
+
+nodz.createConnection('nodeB', 'Battr5', 'nodeA', 'Aattr4')
 
 # Attributes Edition
 nodz.editAttribute(node=nodeC, index=0, newName=None, newIndex=-1)

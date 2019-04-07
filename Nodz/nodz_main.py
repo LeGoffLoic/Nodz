@@ -457,6 +457,7 @@ class Nodz(QtWidgets.QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.rubberband = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self)
+        self.setStyleSheet("background: rgb" + str(utils._convertDataToColor(config["scene_bg_color"]).getRgb()))
 
         # Setup scene.
         scene = NodeScene(self)
@@ -594,7 +595,7 @@ class Nodz(QtWidgets.QGraphicsView):
 
 
     # ATTRS
-    def createAttribute(self, node, name='default', index=-1, preset='attr_default', plug=True, socket=True, dataType=None, plugMaxConnections=-1, socketMaxConnections=1):
+    def createAttribute(self, node, name='default', index=-1, preset='attr_default', plug=True, socket=True, dataType=None, plugMaxConnections=-1, socketMaxConnections=1, connectionLabel=None, connectionIcon=None):
         """
         Create a new attribute with a given name.
 
@@ -641,7 +642,7 @@ class Nodz(QtWidgets.QGraphicsView):
             print 'Attribute creation aborted !'
             return
 
-        node._createAttribute(name=name, index=index, preset=preset, plug=plug, socket=socket, dataType=dataType, plugMaxConnections=plugMaxConnections, socketMaxConnections=socketMaxConnections)
+        node._createAttribute(name=name, index=index, preset=preset, plug=plug, socket=socket, dataType=dataType, connectionLabel=connectionLabel, connectionIcon=connectionIcon, plugMaxConnections=plugMaxConnections, socketMaxConnections=socketMaxConnections)
 
         # Emit signal.
         self.signal_AttrCreated.emit(node.name, index)
@@ -857,6 +858,9 @@ class Nodz(QtWidgets.QGraphicsView):
                 socket = attrData['socket']
                 preset = attrData['preset']
                 dataType = attrData['dataType']
+                connectionIcon = attrData['connectionIcon']
+                connectionLabel = attrData['connectionLabel']
+
                 plugMaxConnections = attrData['plugMaxConnections']
                 socketMaxConnections = attrData['socketMaxConnections']
 
@@ -872,7 +876,9 @@ class Nodz(QtWidgets.QGraphicsView):
                                      socket=socket,
                                      dataType=dataType,
                                      plugMaxConnections=plugMaxConnections,
-                                     socketMaxConnections=socketMaxConnections
+                                     socketMaxConnections=socketMaxConnections,
+                                     connectionLabel=connectionLabel,
+                                     connectionIcon=connectionIcon,
                                      )
 
 
@@ -1176,7 +1182,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
         self._attrPen = QtGui.QPen()
         self._attrPen.setStyle(QtCore.Qt.SolidLine)
 
-    def _createAttribute(self, name, index, preset, plug, socket, dataType, plugMaxConnections, socketMaxConnections):
+    def _createAttribute(self, name, index, preset, plug, socket, dataType, connectionLabel, connectionIcon, plugMaxConnections, socketMaxConnections):
         """
         Create an attribute by expanding the node, adding a label and
         connection items.
@@ -1219,6 +1225,8 @@ class NodeItem(QtWidgets.QGraphicsItem):
                                 index=self.attrCount,
                                 preset=preset,
                                 dataType=dataType,
+                                connectionLabel=connectionLabel,
+                                connectionIcon=connectionIcon,
                                 maxConnections=plugMaxConnections)
 
             self.plugs[name] = plugInst
@@ -1230,6 +1238,8 @@ class NodeItem(QtWidgets.QGraphicsItem):
                                     index=self.attrCount,
                                     preset=preset,
                                     dataType=dataType,
+                                    connectionLabel=connectionLabel,
+                                    connectionIcon=connectionIcon,
                                     maxConnections=socketMaxConnections)
 
             self.sockets[name] = socketInst
@@ -1248,6 +1258,8 @@ class NodeItem(QtWidgets.QGraphicsItem):
                                 'plug': plug,
                                 'preset': preset,
                                 'dataType': dataType,
+                                'connectionIcon': connectionIcon,
+                                'connectionLabel': connectionLabel,
                                 'plugMaxConnections': plugMaxConnections,
                                 'socketMaxConnections': socketMaxConnections
                                 }
@@ -1499,7 +1511,7 @@ class SlotItem(QtWidgets.QGraphicsItem):
 
     """
 
-    def __init__(self, parent, attribute, preset, index, dataType, maxConnections):
+    def __init__(self, parent, attribute, preset, index, dataType, connectionLabel, connectionIcon, maxConnections):
         """
         Initialize the class.
 
@@ -1530,8 +1542,10 @@ class SlotItem(QtWidgets.QGraphicsItem):
         self.preset = preset
         self.index = index
         self.dataType = dataType
+        self.connectionLabel = connectionLabel
+        self.connectionIcon = connectionIcon
 
-        # Style.
+        # Style
         self.brush = QtGui.QBrush()
         self.brush.setStyle(QtCore.Qt.SolidPattern)
 
@@ -1575,6 +1589,7 @@ class SlotItem(QtWidgets.QGraphicsItem):
         Start the connection process.
 
         """
+
         if event.button() == QtCore.Qt.LeftButton:
             self.newConnection = ConnectionItem(self.center(),
                                                 self.mapToScene(event.pos()),
@@ -1707,7 +1722,7 @@ class PlugItem(SlotItem):
 
     """
 
-    def __init__(self, parent, attribute, index, preset, dataType, maxConnections):
+    def __init__(self, parent, attribute, index, preset, dataType, connectionLabel, connectionIcon, maxConnections):
         """
         Initialize the class.
 
@@ -1727,7 +1742,7 @@ class PlugItem(SlotItem):
         :type  dataType: Type.
 
         """
-        super(PlugItem, self).__init__(parent, attribute, preset, index, dataType, maxConnections)
+        super(PlugItem, self).__init__(parent, attribute, preset, index, dataType, connectionLabel, connectionIcon, maxConnections)
 
         # Storage.
         self.attributte = attribute
@@ -1815,7 +1830,7 @@ class SocketItem(SlotItem):
 
     """
 
-    def __init__(self, parent, attribute, index, preset, dataType, maxConnections):
+    def __init__(self, parent, attribute, index, preset, dataType, connectionLabel, connectionIcon, maxConnections):
         """
         Initialize the socket.
 
@@ -1835,7 +1850,7 @@ class SocketItem(SlotItem):
         :type  dataType: Type.
 
         """
-        super(SocketItem, self).__init__(parent, attribute, preset, index, dataType, maxConnections)
+        super(SocketItem, self).__init__(parent, attribute, preset, index, dataType, connectionLabel, connectionIcon, maxConnections)
 
         # Storage.
         self.attributte = attribute
@@ -1940,8 +1955,6 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         """
         super(ConnectionItem, self).__init__()
 
-        self.setZValue(1)
-
         # Storage.
         self.socketNode = None
         self.socketAttr = None
@@ -1960,6 +1973,35 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
 
         self.data = tuple()
 
+        # Optional Middle elements
+        pixmap_size = 8
+        self.pixmap_item = None
+        self.label_item = None
+
+        # Pixmap
+        if source.connectionIcon:
+            pixmap_size = 32
+            pixmap = QtGui.QPixmap(source.connectionIcon)
+            pixmap.scaled(pixmap_size, pixmap_size, QtCore.Qt.KeepAspectRatio)
+            self.pixmap_item = QtWidgets.QGraphicsPixmapItem(pixmap)
+            self.pixmap_item.setZValue(0)
+            self.source.scene().addItem(self.pixmap_item)
+
+        # Text Label
+        if source.connectionLabel:
+            text = source.connectionLabel
+            self.label_item = QtWidgets.QGraphicsSimpleTextItem()
+            self.label_item.setText(text)
+
+            font = QtGui.QFont()
+            fontSize = 12
+            font.setPointSize(fontSize)
+            self.textHOffset = len(text)*(fontSize/3)
+            self.textVOffset = (pixmap_size / 2) * (fontSize / 12)
+            self.label_item.setFont(font)
+            self.label_item.setZValue(0)
+            self.source.scene().addItem(self.label_item)
+
         # Methods.
         self._createStyle()
 
@@ -1970,10 +2012,18 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         """
         config = self.source.scene().views()[0].config
         self.setAcceptHoverEvents(True)
-        self.setZValue(-1)
 
         self._pen = QtGui.QPen(utils._convertDataToColor(config['connection_color']))
         self._pen.setWidth(config['connection_width'])
+
+        if self.label_item:
+            self.label_item.setZValue(1)
+            self.label_item.setBrush(utils._convertDataToColor(config['connection_color']))
+
+        if self.pixmap_item:
+            self.pixmap_item.setZValue(1)
+
+        self.setZValue(-1)
 
     def _outputConnectionData(self):
         """
@@ -2101,6 +2151,8 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
 
         scene = self.scene()
         scene.removeItem(self)
+        scene.removeItem(self.pixmap_item)
+        scene.removeItem(self.label_item)
         scene.update()
 
     def updatePath(self):
@@ -2117,5 +2169,12 @@ class ConnectionItem(QtWidgets.QGraphicsPathItem):
         ctrl1 = QtCore.QPointF(self.source_point.x() + dx, self.source_point.y() + dy * 0)
         ctrl2 = QtCore.QPointF(self.source_point.x() + dx, self.source_point.y() + dy * 1)
         path.cubicTo(ctrl1, ctrl2, self.target_point)
+
+        point = path.pointAtPercent(0.5)
+
+        if self.pixmap_item:
+            self.pixmap_item.setOffset(point.x() - 16, point.y() -16)  
+        if self.label_item:
+            self.label_item.setPos (point.x() - self.textHOffset, point.y() + self.textVOffset)
 
         self.setPath(path)
