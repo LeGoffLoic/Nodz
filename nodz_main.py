@@ -80,10 +80,16 @@ class Nodz(QtWidgets.QGraphicsView):
         inFactor = 1.15
         outFactor = 1 / inFactor
 
-        if event.delta() > 0:
-            zoomFactor = inFactor
-        else:
-            zoomFactor = outFactor
+        try:
+            if event.delta() > 0:
+                zoomFactor = inFactor
+            else:
+                zoomFactor = outFactor
+        except AttributeError:
+            if event.angleDelta().y() > 0:
+                zoomFactor = inFactor
+            else:
+                zoomFactor = outFactor
 
         self.scale(zoomFactor, zoomFactor)
         self.currentState = 'DEFAULT'
