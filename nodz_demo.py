@@ -38,6 +38,10 @@ def on_nodeSelected(nodesName):
 def on_nodeMoved(nodeName, nodePos):
     print 'node {0} moved to {1}'.format(nodeName, nodePos)
 
+@QtCore.Slot(str)
+def on_nodeDoubleClick(nodeName):
+    print 'double click on node : {0}'.format(nodeName)
+
 # Attrs
 @QtCore.Slot(str, int)
 def on_attrCreated(nodeName, attrId):
@@ -87,6 +91,7 @@ nodz.signal_NodeDeleted.connect(on_nodeDeleted)
 nodz.signal_NodeEdited.connect(on_nodeEdited)
 nodz.signal_NodeSelected.connect(on_nodeSelected)
 nodz.signal_NodeMoved.connect(on_nodeMoved)
+nodz.signal_NodeDoubleClicked.connect(on_nodeDoubleClick)
 
 nodz.signal_AttrCreated.connect(on_attrCreated)
 nodz.signal_AttrDeleted.connect(on_attrDeleted)
@@ -124,6 +129,12 @@ nodz.createAttribute(node=nodeA, name='Aattr3', index=-1, preset='attr_preset_2'
 nodz.createAttribute(node=nodeA, name='Aattr4', index=-1, preset='attr_preset_2',
                      plug=True, socket=True, dataType=str)
 
+nodz.createAttribute(node=nodeA, name='Aattr5', index=-1, preset='attr_preset_3',
+                     plug=True, socket=True, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
+
+nodz.createAttribute(node=nodeA, name='Aattr6', index=-1, preset='attr_preset_3',
+                     plug=True, socket=True, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
+
 
 
 # Node B
@@ -134,6 +145,12 @@ nodz.createAttribute(node=nodeB, name='Battr1', index=-1, preset='attr_preset_1'
 
 nodz.createAttribute(node=nodeB, name='Battr2', index=-1, preset='attr_preset_1',
                      plug=True, socket=False, dataType=int)
+
+nodz.createAttribute(node=nodeB, name='Battr3', index=-1, preset='attr_preset_2',
+                     plug=True, socket=False, dataType=int)
+
+nodz.createAttribute(node=nodeB, name='Battr4', index=-1, preset='attr_preset_3',
+                     plug=True, socket=False, dataType=int, plugMaxConnections=1, socketMaxConnections=-1)
 
 
 
