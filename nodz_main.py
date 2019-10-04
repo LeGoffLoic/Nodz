@@ -1021,6 +1021,14 @@ class NodeScene(QtWidgets.QGraphicsScene):
         Draw a grid in the background.
 
         """
+        config = self.parent().config
+
+        self._brush = QtGui.QBrush()
+        self._brush.setStyle(QtCore.Qt.SolidPattern)
+        self._brush.setColor(utils._convertDataToColor(config['bg_color']))
+
+        painter.fillRect(rect, self._brush)
+
         if self.views()[0].gridVisToggle:
             leftLine = rect.left() - rect.left() % self.gridSize
             topLine = rect.top() - rect.top() % self.gridSize
@@ -1037,7 +1045,6 @@ class NodeScene(QtWidgets.QGraphicsScene):
                 u += self.gridSize
 
             self.pen = QtGui.QPen()
-            config = self.parent().config
             self.pen.setColor(utils._convertDataToColor(config['grid_color']))
             self.pen.setWidth(0)
             painter.setPen(self.pen)
