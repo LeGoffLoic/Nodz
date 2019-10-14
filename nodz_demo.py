@@ -1,5 +1,6 @@
 from Qt import QtCore, QtWidgets
 import nodz_main
+import nodz_addons
 
 try:
     app = QtWidgets.QApplication([])
@@ -12,6 +13,7 @@ nodz = nodz_main.Nodz(None)
 nodz.initialize()
 nodz.show()
 
+nodeCreationPopup = None
 
 ######################################################################
 # Test signals
@@ -86,6 +88,13 @@ def on_graphEvaluated():
 def on_keyPressed(key):
     print('key pressed : ', key)
 
+    if key == QtCore.Qt.Key_Tab and nodeCreationPopup is not None:
+        nodeCreationPopup.popup()
+
+    if key == QtCore.Qt.Key_Escape and nodeCreationPopup is not None:
+        nodeCreationPopup.popdown()
+
+
 nodz.signal_NodeCreated.connect(on_nodeCreated)
 nodz.signal_NodeDeleted.connect(on_nodeDeleted)
 nodz.signal_NodeEdited.connect(on_nodeEdited)
@@ -108,7 +117,6 @@ nodz.signal_GraphCleared.connect(on_graphCleared)
 nodz.signal_GraphEvaluated.connect(on_graphEvaluated)
 
 nodz.signal_KeyPressed.connect(on_keyPressed)
-
 
 ######################################################################
 # Test API
@@ -215,7 +223,26 @@ nodz.clearGraph()
 
 nodz.loadGraph(filePath='Enter your path')
 
+######################################################################
+# Test Add-on
+######################################################################
 
+def demoNodeCreator(nodzInst, nodeName, pos):
+    if nodeName in nodeList:
+        id=0
+        uniqueNodeName = '{}_{}'.format(nodeName, id)
+        while uniqueNodeName in nodzInst.scene().nodes.keys():
+            id+=1
+            uniqueNodeName = '{}_{}'.format(nodeName, id)
+
+        nodzInst.createNode(name=uniqueNodeName, position=pos)
+    else:
+        print "{} is node a recognized node type. Known types are: {}".format(nodeName, nodeList)
+
+nodeList = ["NodeTypeA", "NodeTypeB", "NodeTypeC", "LongAndAnnoyingStringThatWillDisplayFarOfTheBounds"]
+nodeCreationPopup = nodz_addons.QtPopupLineEditWidget(nodz.scene().views()[0])
+nodeCreationPopup.setNodesList(nodeList)
+nodeCreationPopup.nodeCreator = demoNodeCreator
 
 if app:
     # command line stand alone test... run our own event loop
