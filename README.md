@@ -20,7 +20,7 @@ Nodz in under the [MIT license](LICENSE.txt).
 
 ###
 ## Requirement
-The following need to be installed!
+The following needs to be installed!
 - pip
 - pipenv
 
@@ -29,9 +29,9 @@ The following need to be installed!
 
 ###
 ## Installation
-- clone
-- cd location
-- pipenv install
+- `git clone`
+- `cd location`
+- `pipenv install`
 - enjoy! :)
 
 
