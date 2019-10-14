@@ -18,17 +18,23 @@ Nodz in under the [MIT license](LICENSE.txt).
 
 
 
+###
+## Requirement
+The following needs to be installed!
+- pip
+- pipenv
+
+
+
 
 ###
-## Prerequisite
-- Python
-- pyQt4 or pyQt5 or pySide or pySide2
-- [Qt.py](https://fredrikaverpil.github.io/2016/07/25/developing-with-qt-py/)
+## Installation
+- `git clone`
+- `cd location`
+- `pipenv install`
+- enjoy! :)
 
-Nodz needs to be in a PYTHONPATH.
 
-**Qt.py is very important as Nodz is based on it in order to work for multiple versions of Qt.**
-Short and easy story for lazy peeps. :smile:   [This file](https://raw.githubusercontent.com/mottosso/Qt.py/master/Qt.py) has to be available within a PYTHONPATH.
 
 
 ###
