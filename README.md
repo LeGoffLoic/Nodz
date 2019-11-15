@@ -115,6 +115,7 @@ signal_NodeDeleted([nodeNames])
 signal_NodeEdited(oldName, newName)
 signal_NodeSelected([nodeNames])
 signal_NodeMoved(nodeName, nodePos)
+signal_NodeRightClicked(nodeName)
 signal_NodeDoubleClicked(nodeName)
 ```
 Attributes
