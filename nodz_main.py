@@ -880,12 +880,12 @@ class Nodz(QtWidgets.QGraphicsView):
 
         for connection in connectionsData:
             source = connection[0]
-            sourceNode = source.split('.')[0]
-            sourceAttr = source.split('.')[1]
+            sourceNode = source.rpartition('.')[0]
+            sourceAttr = source.rpartition('.')[-1]
 
             target = connection[1]
-            targetNode = target.split('.')[0]
-            targetAttr = target.split('.')[1]
+            targetNode = target.rpartition('.')[0]
+            targetAttr = target.rpartition('.')[-1]
 
             self.createConnection(sourceNode, sourceAttr,
                                   targetNode, targetAttr)
