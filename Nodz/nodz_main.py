@@ -59,6 +59,7 @@ class Nodz(QtWidgets.QGraphicsView):
         self.gridSnapToggle = False
         self._nodeSnap = False
         self.selectedNodes = None
+        self.dataTypes = {}
 
         # Connections data.
         self.drawingConnection = False
@@ -80,7 +81,7 @@ class Nodz(QtWidgets.QGraphicsView):
         inFactor = 1.15
         outFactor = 1 / inFactor
 
-        if event.delta() > 0:
+        if event.angleDelta().y() > 0:
             zoomFactor = inFactor
         else:
             zoomFactor = outFactor
@@ -866,7 +867,21 @@ class Nodz(QtWidgets.QGraphicsView):
 
                 # un-serialize data type if needed
                 if (isinstance(dataType, unicode) and dataType.find('<') == 0):
-                    dataType = eval(str(dataType.split('\'')[1]))
+
+                    typeRegex = r".+\.([a-zA-Z]+)"
+                    customType = re.findall(typeRegex, dataType)
+
+
+                    if customType:
+                        typeCode = str(customType[0])
+
+                        if typeCode in self.dataTypes:
+                            dataType = self.dataTypes[typeCode]
+                        else:
+                            dataType = type(typeCode, (object,), {})
+                            self.dataTypes[typeCode] = dataType
+                    else:
+                        dataType = eval(str(dataType.split('\'')[1]))
 
                 self.createAttribute(node=node,
                                      name=name,
