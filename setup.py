@@ -8,7 +8,7 @@ sys.path.insert(0, path)
 from setuptools import setup, find_packages
 
 # patched version from original
-version = "1.3.0-1"
+version = "1.3.0-2"
 
 classifiers = [
     "Development Status :: 3 - Alpha",
