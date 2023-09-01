@@ -805,7 +805,7 @@ class Nodz(QtWidgets.QGraphicsView):
                 if attrData["connectionIcon"] and "icons_folder" in self.config:
                     root = self.config["icons_folder"]
                     iconPath = attrData["connectionIcon"]
-                    if iconPath.startswith(root):
+                    if iconPath and iconPath.startswith(root):
                         iconPath = iconPath.replace(root+os.path.sep, "./")
                         attrData["connectionIcon"] = iconPath
 
@@ -874,7 +874,7 @@ class Nodz(QtWidgets.QGraphicsView):
                 if "icons_folder" in self.config:
                     root = self.config["icons_folder"]
                     iconPath = attrData["connectionIcon"]
-                    if iconPath.startswith("./"):
+                    if iconPath and iconPath.startswith("./"):
                         iconPath = iconPath.replace("./", root+os.path.sep)
                         attrData["connectionIcon"] = iconPath
 
