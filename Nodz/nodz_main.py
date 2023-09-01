@@ -801,6 +801,14 @@ class Nodz(QtWidgets.QGraphicsView):
                 if isinstance(attrData['dataType'], type):
                     attrData['dataType'] = str(attrData['dataType'])
 
+                # make icons relative if possible
+                if attrData["connectionIcon"] and "icons_folder" in self.config:
+                    root = self.config["icons_folder"]
+                    iconPath = attrData["connectionIcon"]
+                    if iconPath.startswith(root):
+                        iconPath = iconPath.replace(root+os.path.sep, "./")
+                        attrData["connectionIcon"] = iconPath
+
                 data['NODES'][node]['attributes'].append(attrData)
 
 
@@ -861,7 +869,17 @@ class Nodz(QtWidgets.QGraphicsView):
                 socket = attrData['socket']
                 preset = attrData['preset']
                 dataType = attrData['dataType']
+
+                # resolve relative icons if possible
+                if "icons_folder" in self.config:
+                    root = self.config["icons_folder"]
+                    iconPath = attrData["connectionIcon"]
+                    if iconPath.startswith("./"):
+                        iconPath = iconPath.replace("./", root+os.path.sep)
+                        attrData["connectionIcon"] = iconPath
+
                 connectionIcon = attrData['connectionIcon']
+
                 connectionLabel = attrData['connectionLabel']
 
                 plugMaxConnections = attrData['plugMaxConnections']
