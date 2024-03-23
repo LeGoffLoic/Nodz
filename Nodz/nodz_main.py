@@ -791,7 +791,8 @@ class Nodz(QtWidgets.QGraphicsView):
             data['NODES'][node] = {'preset': preset,
                                    'position': [nodeInst.pos().x(), nodeInst.pos().y()],
                                    'alternate': nodeAlternate,
-                                   'attributes': []}
+                                   'attributes': [],
+                                   'metadata': nodeInst.metadata}
 
             attrs = nodeInst.attrs
             for attr in attrs:
@@ -853,11 +854,14 @@ class Nodz(QtWidgets.QGraphicsView):
             position = nodesData[name]['position']
             position = QtCore.QPointF(position[0], position[1])
             alternate = nodesData[name]['alternate']
+            metadata = nodesData[name].get('metadata', dict())
 
             node = self.createNode(name=name,
                                    preset=preset,
                                    position=position,
                                    alternate=alternate)
+            # Apply metadata
+            node.metadata = metadata
 
             # Apply attributes data.
             attrsData = nodesData[name]['attributes']
@@ -1138,6 +1142,7 @@ class NodeItem(QtWidgets.QGraphicsItem):
         self.attrsData = dict()
         self.attrCount = 0
         self.currentDataType = None
+        self.metadata = dict()
 
         self.plugs = dict()
         self.sockets = dict()
