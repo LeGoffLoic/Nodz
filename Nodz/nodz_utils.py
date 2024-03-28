@@ -143,7 +143,7 @@ def _saveData(filePath, data):
     :type  data: Dict or List.
 
     """
-    f = open(filePath, "w")
+    f = open(filePath, "w", encoding="utf-8")
     f.write(json.dumps(data,
                        sort_keys = True,
                        indent = 4,
@@ -160,7 +160,7 @@ def _loadData(filePath):
     :type  filePath: Str.
 
     """
-    with open(filePath) as json_file:
+    with open(filePath, encoding="utf-8") as json_file:
         j_data = json.load(json_file)
 
     json_file.close()

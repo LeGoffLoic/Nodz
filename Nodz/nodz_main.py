@@ -820,8 +820,10 @@ class Nodz(QtWidgets.QGraphicsView):
         # Save data.
         try:
             utils._saveData(filePath=filePath, data=data)
-        except:
-            print('Invalid path : {0}'.format(filePath))
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            print('Error saving to path : {0}, {1}'.format(filePath, str(e)))
             print('Save aborted !')
             return False
 
